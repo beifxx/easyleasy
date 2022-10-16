@@ -2,25 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>hahaha</title>
+    <title>Title</title>
 </head>
 <body>
-{% extends 'main.html' %}
-
 {% block content %}
 <form method="POST">
     {% csrf_token %}
     <table>
         {{ form }}
     </table>
-    <a href="/register">Зарегистрироваться</a>
-    <input type="submit" value="Войти">
+    <a href="/register">Войти</a>
+    <input type="submit" value="Зарегистрироваться">
 </form>
 {% endblock %}
-
-
-
-
-
 </body>
 </html>
