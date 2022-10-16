@@ -15,10 +15,6 @@ class ClientProfile(models.Model):
     id_card_num = models.CharField(max_length=9)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class Application(models.Model):
-    id = models.IntegerField(primary_key=True)
-    client_profile = models.ForeignKey(to=ClientProfile, on_delete=models.CASCADE)
-    date_applied = models.DateField()
 
 class Support_Request(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -42,6 +38,12 @@ class Product(models.Model):
     type = models.CharField(max_length=255)
     min_amount = models.FloatField()
     max_amount = models.FloatField()
+
+class Application(models.Model):
+    id = models.IntegerField(primary_key=True)
+    client_profile = models.ForeignKey(to=ClientProfile, on_delete=models.CASCADE)
+    date_applied = models.DateField()
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
 
 class Interest_Rate(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -70,8 +72,9 @@ class Deal(models.Model):
     duration = models.IntegerField()
     rate = models.FloatField()
     loan_amount = models.FloatField()
-    monthly_total = models.FloatField()
+    regular_payment_size = models.FloatField()
     contract = models.ForeignKey(to=Document, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
     regularity = models.CharField(max_length=255)
     date_signed = models.DateField()
+
