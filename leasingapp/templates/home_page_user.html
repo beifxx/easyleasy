@@ -15,7 +15,7 @@
 
     <p>{{ news.description }}</p>
     </div>
-<hr />
+    <hr />
     <br>
     <br>
     <br>
@@ -23,7 +23,7 @@
 <div class="product">
     <h1>Наши продукты</h1>
 
-    <h2><a href="">{{ product.name }}</a> </h2>
+    <h2><a href="/u/product/{{ product.id }}">{{ product.name }}</a> </h2>
         <a href="">Подробнее</a>   <a href="">Заказать консультацию</a>
         <hr />
     <p>Сроки от {{ product.min_duration }} месяцев, сумма от {{ product.min_amount }} рублей</p>

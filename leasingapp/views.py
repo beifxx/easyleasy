@@ -54,3 +54,8 @@ def home_page(request):
     #news = Promo.objects.
     home_content = {'product': Product.objects.first(), 'news': Promo.objects.first()}
     return render(request, 'home_page_user.html', home_content)
+
+def product_page(request, product_id):
+    product = {'product': Product.objects.get(id=product_id)}
+    return render(request, 'product_page.html', product)
+

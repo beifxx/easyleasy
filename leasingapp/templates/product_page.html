@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="product">
+    <h1>{{ product.name }}</h1>
+    Выгодные тарифы для этого и других продуктов очень приятно удивляют всех граждан
+    <h2>Характеристики продукта:</h2>
+    <h4>Минимальная длительность - {{ product.min_duration }} месяцев</h4>
+    <h4>Максимальная длительность - {{ product.max_duration }} месяцев</h4>
+    <h4>Вид лизинга - {{ product.type }}</h4>
+    <h4>Минимальнная сумма - {{ product.min_amount }} рублей</h4>
+    <h4>Максимальная сумма - {{ product.max_amount }} рублей</h4>
+    <h4>Минимальная процентная ставка - </h4>
+
+</div>
+
+
+{% endblock %}
+</body>
+</html>
