@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from leasingapp.models import Promo, Product
 
 from leasingapp.forms import Login_form, Register_form
 
@@ -49,5 +50,7 @@ def register_page(request):
         return render(request, "register_page.html", {'form': form})
 
 
-#def home_page(request):
- #   return render(request, 'home_page_user.html')
+def home_page(request):
+    #news = Promo.objects.
+    home_content = {'product': Product.objects.first(), 'news': Promo.objects.first()}
+    return render(request, 'home_page_user.html', home_content)
