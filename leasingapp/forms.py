@@ -11,3 +11,6 @@ class Register_form(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs={'class': 'email_register'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password_register'}))
     repeat_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password_repeat_register'}))
+
+class Support_form(forms.Form):
+    topic = forms.CharField(widget=forms.TextInput(attrs={'class': 'topic', 'placeholder': 'Тема запроса/продукт', 'value': '{{ product.name }}'}))

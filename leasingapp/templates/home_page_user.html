@@ -24,7 +24,7 @@
     <h1>Наши продукты</h1>
 
     <h2><a href="/u/product/{{ product.id }}">{{ product.name }}</a> </h2>
-        <a href="">Подробнее</a>   <a href="">Заказать консультацию</a>
+        <a href="/u/product/{{ product.id }}">Подробнее</a>   <a href="/u/support/{{ product.id }}">Заказать консультацию</a>
         <hr />
     <p>Сроки от {{ product.min_duration }} месяцев, сумма от {{ product.min_amount }} рублей</p>
 

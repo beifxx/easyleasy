@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from leasingapp.models import Promo, Product
 
-from leasingapp.forms import Login_form, Register_form
+from leasingapp.forms import Login_form, Register_form, Support_form
 
 
 def login_page(request):
@@ -59,3 +59,11 @@ def product_page(request, product_id):
     product = {'product': Product.objects.get(id=product_id)}
     return render(request, 'product_page.html', product)
 
+def support_page(request, product_id):
+    form = Support_form
+    if product_id is not None:
+        product = {'product': Product.objects.get(id=product_id)}
+        return render(request, 'support_request.html', product, {'form': form})
+    else:
+        product = None
+        return render(request, 'support_request.html', product, {'form': form})
