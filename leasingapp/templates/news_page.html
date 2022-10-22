@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'main.html' %}
+
+{% block content %}
+    {% for newsflash in news %}
+    <div class="newsflash">
+    <h2>{{ newsflash.product.name }} </h2>
+
+    <p>{{ newsflash.description }}</p>
+    </div>
+    {% endfor %}
+
+{% endblock %}
+</body>
+</html>

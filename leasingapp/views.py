@@ -68,7 +68,17 @@ def support_page(request):
         form = Support_form()
         return render(request, 'support_request.html', {'form': form})
     else:
-        client_profile = ClientProfile.objects.filter(user= request.user).first()
-        support_request = Support_Request.objects.create(date=date.today(), topic= request.POST.get('topic'), client_profile=client_profile)
+        client_profile = ClientProfile.objects.filter(user=request.user).first()
+        Support_Request.objects.create(date=date.today(), topic=request.POST.get('topic'),
+                                       client_profile=client_profile)
+        return render(request, 'support_success_page.html')
 
 
+def news_page(request):
+    news = {'news': Promo.objects.all()}
+    return render(request, 'news_page.html', news)
+
+
+def products_page(request):
+    products = {'products': Product.objects.all()}
+    return render(request, 'products_page.html', products)

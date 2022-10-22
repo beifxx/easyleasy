@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'main.html' %}
+
+{% block content %}
+    {% for product in products %}
+    <div class="product_card">
+    <h2><a href="/u/product/{{ product.id }}">{{ product.name }}</a> </h2>
+        <a href="/u/product/{{ product.id }}">Подробнее</a>   <a href="/u/support/">Заказать консультацию</a>
+        <hr />
+    <p>Сроки от {{ product.min_duration }} месяцев, сумма от {{ product.min_amount }} рублей</p>
+    </div>
+    {% endfor %}
+
+{% endblock %}
+</body>
+</html>
