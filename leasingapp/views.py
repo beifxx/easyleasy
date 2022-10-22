@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
+from datetime import date
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from leasingapp.models import Promo, Product
+from leasingapp.models import Promo, Product, Support_Request, ClientProfile
 
 from leasingapp.forms import Login_form, Register_form, Support_form
 
@@ -36,7 +37,8 @@ def register_page(request):
         password = request.POST.get('password')
         print(username)
         print(password)
-        try: User.objects.get(username=username)
+        try:
+            User.objects.get(username=username)
         except User.DoesNotExist:
             user = User.objects.create_user(username=username, email=email, password=password)
             login(request, user)
@@ -51,19 +53,22 @@ def register_page(request):
 
 
 def home_page(request):
-    #news = Promo.objects.
+    # news = Promo.objects.
     home_content = {'product': Product.objects.first(), 'news': Promo.objects.first()}
     return render(request, 'home_page_user.html', home_content)
+
 
 def product_page(request, product_id):
     product = {'product': Product.objects.get(id=product_id)}
     return render(request, 'product_page.html', product)
 
-def support_page(request, product_id):
-    form = Support_form
-    if product_id is not None:
-        product = {'product': Product.objects.get(id=product_id)}
-        return render(request, 'support_request.html', product, {'form': form})
+
+def support_page(request):
+    if request.method == 'GET':
+        form = Support_form()
+        return render(request, 'support_request.html', {'form': form})
     else:
-        product = None
-        return render(request, 'support_request.html', product, {'form': form})
+        client_profile = ClientProfile.objects.filter(user= request.user).first()
+        support_request = Support_Request.objects.create(date=date.today(), topic= request.POST.get('topic'), client_profile=client_profile)
+
+
