@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hahaha</title>
+</head>
+<body>
+{% extends 'main.html' %}
+
+{% block content %}
+{#<form method="POST">#}
+{#    {% csrf_token %}#}
+{#    <table>#}
+{#        {{ form_username }}#}
+{#    </table>#}
+{#    <input type="submit" value="Изменить">#}
+{#</form>#}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form_password }}
+    </table>
+    <input type="submit" value="Изменить">
+</form>
+{% endblock %}
+
+
+
+
+
+</body>
+</html>

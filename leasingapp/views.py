@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from leasingapp.models import Promo, Product, Support_Request, ClientProfile
 
-from leasingapp.forms import Login_form, Register_form, Support_form
+from leasingapp.forms import *
 
 
 def login_page(request):
@@ -46,8 +46,6 @@ def register_page(request):
                 return redirect('a/home')
             else:
                 return redirect('u/home')
-
-
     else:
         return render(request, "register_page.html", {'form': form})
 
@@ -68,9 +66,8 @@ def support_page(request):
         form = Support_form()
         return render(request, 'support_request.html', {'form': form})
     else:
-        client_profile = ClientProfile.objects.filter(user=request.user).first()
         Support_Request.objects.create(date=date.today(), topic=request.POST.get('topic'),
-                                       client_profile=client_profile)
+                                       name=request.POST.get('name'), phone_num=request.POST.get('phone_num'))
         return render(request, 'support_success_page.html')
 
 
@@ -82,3 +79,20 @@ def news_page(request):
 def products_page(request):
     products = {'products': Product.objects.all()}
     return render(request, 'products_page.html', products)
+
+
+def my_user_account(request):
+    #username_form = Change_my_username_form()
+    password_form = Change_my_password_form()
+    if request.method == 'GET':
+        return render(request, 'user_account.html', {'form_password': password_form})
+    else:
+        user = User.objects.get(id=request.user.id)
+        #if request.POST.get('username') != '':
+         #   user.username = request.POST.get('username')
+        #if request.POST.get('password') != '':
+        user.set_password(request.POST.get('password'))
+
+        user.save()
+        login(request, user)
+        return render(request, 'user_account.html', {'form_password': password_form})

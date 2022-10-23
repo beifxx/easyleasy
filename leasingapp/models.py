@@ -20,8 +20,8 @@ class Support_Request(models.Model):
     #id = models.IntegerField(primary_key=True)
     date = models.DateField()
     topic = models.CharField(max_length=255)
-    client_profile = models.ForeignKey(to=ClientProfile, on_delete=models.CASCADE)
-
+    name = models.CharField(max_length=255, null=True)
+    phone_num = models.CharField(max_length=255, null=True)
 
 class Document(models.Model):
    # id = models.AutoField(primary_key=True)
