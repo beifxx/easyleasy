@@ -9,9 +9,9 @@ class ClientProfile(models.Model):
     phone_number = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     street = models.CharField(max_length=50)
-    house_number = models.IntegerField()
-    apartment_number = models.IntegerField()
-    date_of_birth = models.DateField()
+    house_number = models.CharField(max_length=50)
+    apartment_number = models.CharField(max_length=50)
+    date_of_birth = models.DateField(blank=True, null=True)
     id_card_num = models.CharField(max_length=9)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -26,7 +26,6 @@ class Support_Request(models.Model):
 class Document(models.Model):
    # id = models.AutoField(primary_key=True)
     definition = models.CharField(max_length=40)
-    cloud_id = models.CharField(max_length=255)
     client_profile = models.ForeignKey(to=ClientProfile, on_delete=models.CASCADE)
 
 

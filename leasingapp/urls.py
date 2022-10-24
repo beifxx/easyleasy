@@ -8,6 +8,7 @@ urlpatterns = [
     path('u/news/', views.news_page),
     path('u/products', views.products_page),
     path('u/account', views.my_user_account),
+    path('u/new_request/client_data', views.new_request_add_client),
     path('', views.login_page),
     path('register', views.register_page),
 ]

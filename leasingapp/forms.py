@@ -44,3 +44,25 @@ class Change_my_password_form(forms.Form):
         self.fields['password'].required = False
 
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password'}))
+
+
+class New_request_add_client_form(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'last_name'}))
+    #citizenship = forms.CharField(widget=forms.TextInput(attrs={'class': 'citizenship'}))
+    #sex = forms.CharField(widget=forms.TextInput(attrs={'class': 'sex'}))
+    id_card_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'id_card_num'}))
+    #id_start_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'id_start_date'}))
+    #id_end_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'id_end_date'}))
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'class': 'date_of_birth','type':'date', 'blank':'true', 'null':'true'}))
+    #marital_status = forms.CharField(widget=forms.TextInput(attrs={'class': 'marital_status'}))
+    city = forms.CharField(widget=forms.TextInput(attrs={'class': 'city'}))
+    street = forms.CharField(widget=forms.TextInput(attrs={'class': 'street'}))
+    house_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'house_num'}))
+    apartment_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'apartment_num'}))
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'phone_number'}))
+    income_proofs = forms.FileField(widget=forms.FileInput(attrs={'class': 'income_proofs', 'accept': 'application/pdf'}))
+    existing_credits = forms.FileField(widget=forms.FileInput(attrs={'class': 'existing_credits', 'accept': 'application/pdf'}))
