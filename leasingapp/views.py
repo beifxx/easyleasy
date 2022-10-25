@@ -9,6 +9,7 @@ from leasingapp.models import *
 import pyrebase
 from django.core.files.storage import default_storage
 from leasingapp.forms import *
+import json
 
 
 def login_page(request):
@@ -115,13 +116,12 @@ def new_request_add_client(request):
     firebase = pyrebase.initialize_app(firebaseConfig)
     cloud_storage = firebase.storage()
     add_client_form = New_request_add_client_form()
+    products = Product.objects.all()
     if request.method == 'GET':
-        return render(request, 'new_request_client_data.html', {'form': add_client_form})
+        return render(request, 'new_request_client_data.html', {'form': add_client_form, 'products': products})
     else:
         client_profile = ClientProfile.objects.create(name=request.POST.get('name'), last_name=request.POST.get('last_name'),phone_number=request.POST.get('phone_number'),city=request.POST.get('city'),street=request.POST.get('street'),house_number=request.POST.get('house_num'),
                                                       apartment_number=request.POST.get('apartment_num'),date_of_birth=request.POST.get('date_of_birth'),id_card_num=request.POST.get('id_card_num'),user=request.user)
-
-
 
         income_file = request.FILES['income_proofs']
         file_name = default_storage.save(income_file.name, income_file)#save file to root directory
@@ -145,3 +145,10 @@ def new_request_add_client(request):
         os.rename(file_name, new_existing_credits_name) #rename it to unique id from DB
         cloud_storage.child('/existing credits').child(new_existing_credits_name).put(new_existing_credits_name)
         os.remove(new_existing_credits_name)  # delete file from root directory after uploading to cloud
+        #TODO to add next page after submitting client data and docs
+        new_application = Application.objects.create(date_applied=date.today(), client_profile=client_profile,
+                                                     product_id=request.POST.get('product_id'), leasing_object=request.POST.get('leasing_object'))
+        return render(request, 'application_success.html')
+
+
+
