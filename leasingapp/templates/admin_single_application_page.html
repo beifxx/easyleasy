@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 </head>
 
@@ -59,9 +60,10 @@
     <h5>Фамилия - {{ application.client_profile.last_name }}</h5>
     <h5>Номер телефона - {{ application.client_profile.phone_number }}</h5>
     <h5>Продукт - {{ application.product.name }}</h5>
+    <h5>Клиент - {{ application.client_profile.type }}</h5>
 
 
-    <form target="_blank" method="post" action="/a/download/phys">
+    <form id="download_form" target="_blank" method="post" action="{{ download_link }}">
         {% csrf_token %}
 
     <input name="client_profile" type="hidden" value="{{ application.client_profile.id }}">

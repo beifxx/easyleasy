@@ -20,6 +20,32 @@ from leasingapp.forms import *
 import json
 
 
+firebaseConfig = {
+        'apiKey': "AIzaSyDZBOo80y_kLGMbeZRbmuB9QtxOoFpZQgE",
+        'authDomain': "easy-leasy-33a51.firebaseapp.com",
+        'databaseURL': "https://easy-leasy-33a51-default-rtdb.europe-west1.firebasedatabase.app",
+        'projectId': "easy-leasy-33a51",
+        'storageBucket': "easy-leasy-33a51.appspot.com",
+        'messagingSenderId': "614641626422",
+        'appId': "1:614641626422:web:921d06880bb4b7172c9797"
+    }
+firebase = pyrebase.initialize_app(firebaseConfig)
+cloud_storage = firebase.storage()
+cred = credentials.Certificate({
+        "type": "service_account",
+        "project_id": "easy-leasy-33a51",
+        "private_key_id": "343efe54dfe2076bbfbcbde2820fa0148ba1d697",
+        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChTNqIoyd/8CFU\ndFStqwo96xSDIe+frpjrYUoAaRMqw+oBDvv1MeN2pnU+8ytW8jPxKDLJkKABJjXd\nZFJaDB8c22po/NyR9r2nt8A1hw9CCKd5naHFcA2e8tlbLmpKCe8+Myz5MhTRJK1p\n4t0M9dUXj2zhwYfvlg7ngvcefdcxHP9y8ZdMcVeEZ5Ql5Lv0GrnYuFPDwMjpqtWV\nZsDqHrTksjYKOb8CdBX0+6Z5I+DS9myzYZuaM+hijNzw4XXZw/CPRlIQXbss45A6\naMHZ6QBabPLKI3UcPsfzvvZv6ig2EihS2RLgbON7FncZtxKkHqTe/mi+06qkcrsk\nKHM3DNFRAgMBAAECggEABz8iVknWMsuWrmpSNOyJQkI3IrO58JecgSlWyhvuY4PN\nFeJsHsDwsi+aTDYKjWvGOksPCmU3+wqSGEczN/PGy2TELBaoJi/1Uf1Rt6tAsTvI\nTRDFks7iSHDVTmEQdLvA3C+FEWZW7xUnFqm9j/Z/bgE16BKUyTEZrFGtnoNoJpRP\nq/PzC40JtNAof5Thu0auOe2Z+E6fJXOlsfBOgAHfW67pFUjYWQaPWS/4bZyfdguh\naxW9X/Ef8h9RdurjN08LOiX7WpJ5lWnAwU8JY8mH5LpfmW4TD2gMIUJ5t63s6bY0\nwXRXCwWRg45zJh6wioPfEsFBxnw96Vz8aSw2C9cxPQKBgQDO+Pvj1mz4+4WGLP12\niWc5yzhGpSNrz05C+k2GLv/q/pxc8LHYPq/1nSbWmm7CwVHWtt3BznYET2uFnZWZ\nUMUKN4e8mRZAadzx/BXb/aQ7LPOOJGWMPCOcUnaR7lZZmg47hS1H6vZIWqajHb1S\nh9dVYQ7A5YA3iMZWHOZCxj2YywKBgQDHgkCtnv2ffy+OET6RP+M4H7dM3AUjetyE\nNW3C64vRJ2q6ctTSv823Roe5RWqCyDGo9ysnd4iwdwJO3v0xLNavDpM9oW8r8J1X\nDsg3FXyH4v7ixCTBAxQNWIrwEjNjwSkCtullDguHLROELPg3AblVWZBQ5UtM0/OJ\nYyLXJFVm0wKBgQClAskAWwJCd3V7Bf+GNAICh8z0NdDJsVu59ok8Q9hxaFENoDCK\nMWBkN8ixLCrGRw6SWvTuAUcCJLearYqJ02VkweUMLhkZfc1TeCGNZOk87Je5abc0\nWPYjOXOi4RwjD7ntJj51qhR0lyFnxtwcIoVBYsI6dD8HB5rpKN1Du318hQKBgCP3\nqH9khWbGwCUFmNkIwobwuNQDam2+DZlMJJCadGdtisE4SIQCDi03auqMyCnxu3ox\nrTb9RshBfEoJy22dHssKfqMCwo8SXts+D/xWRFAfLUJmiBW/31KUnt+u+FLIlQMn\nRKZyRMPG7ZjLnqgUCHyJnAnpfIzKPUKMe9B7fWX/AoGANBoofs8bAvD70r2vparl\nZlrL/lm0fqyQ7cExD/YsdxS235mHQFa1nyLgjTovvLe42XARJ6cbqCcH09+12D16\nRaESv8FA0CzQYMaoeZsoc7xLIPhcx7JE8/3cq2aa2qcKhT9VsLqI/j9d6BghMJlk\nxdh/woJoomS0SdvIZX1OpvA=\n-----END PRIVATE KEY-----\n",
+        "client_email": "firebase-adminsdk-x78xi@easy-leasy-33a51.iam.gserviceaccount.com",
+        "client_id": "115483754411798145818",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-x78xi%40easy-leasy-33a51.iam.gserviceaccount.com"
+    }
+    )
+firebase_admin.initialize_app(cred)
+
 def login_page(request):
     for parent, dirnames, filenames in os.walk('../easyleasy'):
         for fn in filenames:
@@ -153,7 +179,6 @@ def my_user_account(request):  # TODO fix the thing
 
 
 def new_request_choose_type(request):
-
     for parent, dirnames, filenames in os.walk('../easyleasy'):
         for fn in filenames:
             if fn.lower().endswith('.pdf'):
@@ -166,18 +191,6 @@ def phys_new_request(request):
         for fn in filenames:
             if fn.lower().endswith('.pdf'):
                 os.remove(os.path.join(parent, fn))
-    firebaseConfig = {
-        'apiKey': "AIzaSyDZBOo80y_kLGMbeZRbmuB9QtxOoFpZQgE",
-        'authDomain': "easy-leasy-33a51.firebaseapp.com",
-        'databaseURL': "https://easy-leasy-33a51-default-rtdb.europe-west1.firebasedatabase.app",
-        'projectId': "easy-leasy-33a51",
-        'storageBucket': "easy-leasy-33a51.appspot.com",
-        'messagingSenderId': "614641626422",
-        'appId': "1:614641626422:web:921d06880bb4b7172c9797"
-    }
-
-    firebase = pyrebase.initialize_app(firebaseConfig)
-    cloud_storage = firebase.storage()
     new_request_form = New_request_phys_form()
     products = Product.objects.all()
     if request.method == 'GET':
@@ -287,18 +300,6 @@ def jur_new_request(request):
         for fn in filenames:
             if fn.lower().endswith('.pdf'):
                 os.remove(os.path.join(parent, fn))
-    firebaseConfig = {
-        'apiKey': "AIzaSyDZBOo80y_kLGMbeZRbmuB9QtxOoFpZQgE",
-        'authDomain': "easy-leasy-33a51.firebaseapp.com",
-        'databaseURL': "https://easy-leasy-33a51-default-rtdb.europe-west1.firebasedatabase.app",
-        'projectId': "easy-leasy-33a51",
-        'storageBucket': "easy-leasy-33a51.appspot.com",
-        'messagingSenderId': "614641626422",
-        'appId': "1:614641626422:web:921d06880bb4b7172c9797"
-    }
-
-    firebase = pyrebase.initialize_app(firebaseConfig)
-    cloud_storage = firebase.storage()
     new_request_form = New_request_jur_form()
     products = Product.objects.all()
     if request.method == 'GET':
@@ -306,7 +307,7 @@ def jur_new_request(request):
     else:
         client_profile = ClientProfile.objects.create(name=request.POST.get('name'),
                                                       last_name=request.POST.get('last_name'),
-                                                      phone_number=request.POST.get('phone_number'), type="Физлицо",
+                                                      phone_number=request.POST.get('phone_number'), type="Юрлицо",
                                                       user=request.user)
         ######################################################
 
@@ -569,34 +570,15 @@ def admin_single_application(request, application_id):
     if request.method == 'GET':
 
         form = Admin_application_form()
-  #      if application.client_profile=="Физлицо":
-
-#            else:
-
-        incomes_doc_id = Document.objects.filter(client_profile=application.client_profile,
-                                                 definition="application_document").first()
-        #existing_liabilities_doc_id = Document.objects.filter(client_profile=application.client_profile,
-         #                                                     definition="existing_credits_document")
-        doc_name = incomes_doc_id.id.__str__() + ".pdf"
-        #cloud_storage.child().download("/phys/application", filename=doc_name)
-
+        if application.client_profile.type == "Физлицо":
+            downloadl_link = "/a/phys/download"
+        else:
+            downloadl_link = "/a/jur/download"
         return render(request, 'admin_single_application_page.html',
-                      {'application': application, 'form': form, 'income': incomes_doc_id,'download_name':doc_name
-                       })
+                      {'application': application, 'form': form, 'download_link': downloadl_link})
 
 
 def download_phys_zip(request):
-    firebaseConfig = {
-        'apiKey': "AIzaSyDZBOo80y_kLGMbeZRbmuB9QtxOoFpZQgE",
-        'authDomain': "easy-leasy-33a51.firebaseapp.com",
-        'databaseURL': "https://easy-leasy-33a51-default-rtdb.europe-west1.firebasedatabase.app",
-        'projectId': "easy-leasy-33a51",
-        'storageBucket': "easy-leasy-33a51.appspot.com",
-        'messagingSenderId': "614641626422",
-        'appId': "1:614641626422:web:921d06880bb4b7172c9797"
-    }
-    firebase = pyrebase.initialize_app(firebaseConfig)
-
     income_file_name = "Данные о доходах.pdf"
     existing_credits_file_name = "Данные о текущих кредитах.pdf"
     leasing_object_file_name = "Данные об объекте лизинга.pdf"
@@ -605,43 +587,34 @@ def download_phys_zip(request):
     passport_file_name = "Паспорт.pdf"
     work_record_book_file_name = "Трудовая книжка.pdf"
     income = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="income_document").first()
+                                     definition="income_document").first()
     existing_credits = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="existing_credits_document").first()
+                                               definition="existing_credits_document").first()
     leasing_object = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="leasing_object_document").first()
+                                             definition="leasing_object_document").first()
     application = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="application_document").first()
+                                          definition="application_document").first()
     credit_report_agreement = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="credit_report_agreement_document").first()
+                                                      definition="credit_report_agreement_document").first()
     passport = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="passport_document").first()
+                                       definition="passport_document").first()
     work_record_book = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
-                                         definition="work_record_book_document").first()
+                                               definition="work_record_book_document").first()
 
-    cred = credentials.Certificate({
-  "type": "service_account",
-  "project_id": "easy-leasy-33a51",
-  "private_key_id": "343efe54dfe2076bbfbcbde2820fa0148ba1d697",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChTNqIoyd/8CFU\ndFStqwo96xSDIe+frpjrYUoAaRMqw+oBDvv1MeN2pnU+8ytW8jPxKDLJkKABJjXd\nZFJaDB8c22po/NyR9r2nt8A1hw9CCKd5naHFcA2e8tlbLmpKCe8+Myz5MhTRJK1p\n4t0M9dUXj2zhwYfvlg7ngvcefdcxHP9y8ZdMcVeEZ5Ql5Lv0GrnYuFPDwMjpqtWV\nZsDqHrTksjYKOb8CdBX0+6Z5I+DS9myzYZuaM+hijNzw4XXZw/CPRlIQXbss45A6\naMHZ6QBabPLKI3UcPsfzvvZv6ig2EihS2RLgbON7FncZtxKkHqTe/mi+06qkcrsk\nKHM3DNFRAgMBAAECggEABz8iVknWMsuWrmpSNOyJQkI3IrO58JecgSlWyhvuY4PN\nFeJsHsDwsi+aTDYKjWvGOksPCmU3+wqSGEczN/PGy2TELBaoJi/1Uf1Rt6tAsTvI\nTRDFks7iSHDVTmEQdLvA3C+FEWZW7xUnFqm9j/Z/bgE16BKUyTEZrFGtnoNoJpRP\nq/PzC40JtNAof5Thu0auOe2Z+E6fJXOlsfBOgAHfW67pFUjYWQaPWS/4bZyfdguh\naxW9X/Ef8h9RdurjN08LOiX7WpJ5lWnAwU8JY8mH5LpfmW4TD2gMIUJ5t63s6bY0\nwXRXCwWRg45zJh6wioPfEsFBxnw96Vz8aSw2C9cxPQKBgQDO+Pvj1mz4+4WGLP12\niWc5yzhGpSNrz05C+k2GLv/q/pxc8LHYPq/1nSbWmm7CwVHWtt3BznYET2uFnZWZ\nUMUKN4e8mRZAadzx/BXb/aQ7LPOOJGWMPCOcUnaR7lZZmg47hS1H6vZIWqajHb1S\nh9dVYQ7A5YA3iMZWHOZCxj2YywKBgQDHgkCtnv2ffy+OET6RP+M4H7dM3AUjetyE\nNW3C64vRJ2q6ctTSv823Roe5RWqCyDGo9ysnd4iwdwJO3v0xLNavDpM9oW8r8J1X\nDsg3FXyH4v7ixCTBAxQNWIrwEjNjwSkCtullDguHLROELPg3AblVWZBQ5UtM0/OJ\nYyLXJFVm0wKBgQClAskAWwJCd3V7Bf+GNAICh8z0NdDJsVu59ok8Q9hxaFENoDCK\nMWBkN8ixLCrGRw6SWvTuAUcCJLearYqJ02VkweUMLhkZfc1TeCGNZOk87Je5abc0\nWPYjOXOi4RwjD7ntJj51qhR0lyFnxtwcIoVBYsI6dD8HB5rpKN1Du318hQKBgCP3\nqH9khWbGwCUFmNkIwobwuNQDam2+DZlMJJCadGdtisE4SIQCDi03auqMyCnxu3ox\nrTb9RshBfEoJy22dHssKfqMCwo8SXts+D/xWRFAfLUJmiBW/31KUnt+u+FLIlQMn\nRKZyRMPG7ZjLnqgUCHyJnAnpfIzKPUKMe9B7fWX/AoGANBoofs8bAvD70r2vparl\nZlrL/lm0fqyQ7cExD/YsdxS235mHQFa1nyLgjTovvLe42XARJ6cbqCcH09+12D16\nRaESv8FA0CzQYMaoeZsoc7xLIPhcx7JE8/3cq2aa2qcKhT9VsLqI/j9d6BghMJlk\nxdh/woJoomS0SdvIZX1OpvA=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-x78xi@easy-leasy-33a51.iam.gserviceaccount.com",
-  "client_id": "115483754411798145818",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-x78xi%40easy-leasy-33a51.iam.gserviceaccount.com"
-}
-)
-    firebase_admin.initialize_app(cred)
-    cloud_storage = firebase.storage()
-    cloud_storage.child('/phys/income/'+ income.id.__str__()+'.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/income', filename=income_file_name)
-    cloud_storage.child('/phys/existing_credits/' + existing_credits.id.__str__()+'.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/existing_credits', filename=existing_credits_file_name)
-    cloud_storage.child('/phys/leasing_object/'+leasing_object.id.__str__()+'.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/leasing_object', filename=leasing_object_file_name)
-    cloud_storage.child('/phys/application/' + application.id.__str__()+'.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/application', filename=application_file_name)
-    cloud_storage.child('/phys/credit_report_agreement/'+credit_report_agreement.id.__str__()+'.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/credit_report_agreement', filename=credit_report_agreement_file_name)
-    cloud_storage.child('/phys/passport/'+passport.id.__str__()+'.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/passport', filename=passport_file_name)
-    cloud_storage.child('/phys/work_record_book/' + work_record_book.id.__str__() + '.pdf').download('gs://easy-leasy-33a51.appspot.com/phys/work_record_book', filename=work_record_book_file_name)
-
+    cloud_storage.child('/phys/income/' + income.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/income', filename=income_file_name)
+    cloud_storage.child('/phys/existing_credits/' + existing_credits.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/existing_credits', filename=existing_credits_file_name)
+    cloud_storage.child('/phys/leasing_object/' + leasing_object.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/leasing_object', filename=leasing_object_file_name)
+    cloud_storage.child('/phys/application/' + application.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/application', filename=application_file_name)
+    cloud_storage.child('/phys/credit_report_agreement/' + credit_report_agreement.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/credit_report_agreement', filename=credit_report_agreement_file_name)
+    cloud_storage.child('/phys/passport/' + passport.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/passport', filename=passport_file_name)
+    cloud_storage.child('/phys/work_record_book/' + work_record_book.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/phys/work_record_book', filename=work_record_book_file_name)
 
     zip_name = 'zip_file.zip'
     z = zipfile.ZipFile(zip_name, 'w')
@@ -656,9 +629,131 @@ def download_phys_zip(request):
     z.close()
 
     return FileResponse(
-            open(zip_name, 'rb'),
-            as_attachment=True,
-            filename='Архив документов клиента.zip'
-        )
+        open(zip_name, 'rb'),
+        as_attachment=True,
+        filename='Архив документов клиента.zip'
+    )
 
 
+def download_jur_zip(request):
+    print("JURY TIIIIIIIIIMEEEEEE")
+
+
+    annual_financial_reporting_file_name = "Годовая Финансовая отчетность, с отметкой ИМНС, за последние два (2) года.pdf"
+    bank_extract_file_name = "Справка банка, в котором обслуживается Клиент.pdf"
+    leasing_object_file_name = "Детальная информация об объекте лизинга.pdf"
+    application_file_name = "Заявление на заключение договора лизинга.pdf"
+    chief_officer_assignment_file_name = "Копия документов, подтверждающая факт назначения и полномочия генерального директора.pdf"
+    chief_officer_id_file_name = "Копия паспорта директора.pdf"
+    debit_credit_debt_file_name = "Расшифровка задолженности по кредитам, займам, лизинговым договорам на последнюю отчетную дату с указанием сроков погашения.pdf"
+    creditor_debitor_debt_file_name = "Расшифровка дебиторской и кредиторской задолженности на последнюю отчетную дату в разрезе сроков образования.pdf"
+    entity_statute_file_name = "Копия Устава со всеми изменениями и дополнениями.pdf"
+    equipment_list_file_name = "Опись основных средств с указанием остаточной балансовой стоимости на последнюю отчетную дату.pdf"
+    interim_financial_reporting_file_name = "Промежуточная Финансовая отчетность за последний отчетный период.pdf"
+    existing_credits_file_name = "Копии действующих кредитных, факторинговых и лизинговых договоров.pdf"
+    license_file_name = "Имеющиеся лицензии.pdf"
+    object_usage_file_name = "Общая информация о компании и об использовании объекта лизинга.pdf"
+    registration_file_name = "Копия свидетельства о регистрации.pdf"
+    shareholder_registration_file_name = "Выписка из реестра акционеров (при наличии).pdf"
+    tax_statement_file_name = "Копия свидетельства о постановке на налоговый учет в ИМНС.pdf"
+    annual_financial_reporting = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                                         definition="annual_financial_reporting_document").first()
+    existing_credits = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                               definition="existing_credits_document").first()
+    leasing_object = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                             definition="leasing_object_document").first()
+    application = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                          definition="application_document").first()
+    bank_extract = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                           definition="bank_extract_document").first()
+    chief_officer_assignment = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                                       definition="chief_officer_assignment_document").first()
+    chief_officer_id = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                               definition="chief_officer_id_document").first()
+    debit_credit_debt = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                                definition="debit_credit_debt_document").first()
+    creditor_debitor_debt = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                                    definition="creditor_debitor_debt_document").first()
+    entity_statute = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                             definition="entity_statute_document").first()
+    equipment_list = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                             definition="equipment_list_document").first()
+    interim_financial_reporting = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                                          definition="interim_financial_reporting_document").first()
+    license_custom = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                             definition="license_document").first()
+    object_usage = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                           definition="object_usage_document").first()
+    registration = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                           definition="registration_document").first()
+    shareholder_registration = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                                       definition="shareholder_registration_document").first()
+    tax_statement = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                            definition="tax_statement_document").first()
+
+    cloud_storage.child('/jur/annual_financial_reporting/' + annual_financial_reporting.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/annual_financial_reporting',
+        filename=annual_financial_reporting_file_name)
+    cloud_storage.child('/jur/existing_credits/' + existing_credits.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/existing_credits', filename=existing_credits_file_name)
+    cloud_storage.child('/jur/leasing_object/' + leasing_object.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/leasing_object', filename=leasing_object_file_name)
+    cloud_storage.child('/jur/application/' + application.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/application', filename=application_file_name)
+    cloud_storage.child('/jur/bank_extract/' + bank_extract.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/bank_extract', filename=bank_extract_file_name)
+    cloud_storage.child('/jur/chief_officer_assignment/' + chief_officer_assignment.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/chief_officer_assignment', filename=chief_officer_assignment_file_name)
+    cloud_storage.child('/jur/chief_officer_id/' + chief_officer_id.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/chief_officer_id', filename=chief_officer_id_file_name)
+    cloud_storage.child('/jur/debit_credit_debt/' + debit_credit_debt.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/debit_credit_debt', filename=debit_credit_debt_file_name)
+    cloud_storage.child('/jur/creditor_debitor_debt/' + creditor_debitor_debt.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/creditor_debitor_debt', filename=creditor_debitor_debt_file_name)
+    cloud_storage.child('/jur/entity_statute/' + entity_statute.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/entity_statute', filename=entity_statute_file_name)
+    cloud_storage.child('/jur/equipment_list/' + equipment_list.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/equipment_list', filename=equipment_list_file_name)
+    cloud_storage.child(
+        '/jur/interim_financial_reporting/' + interim_financial_reporting.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/interim_financial_reporting',
+        filename=interim_financial_reporting_file_name)
+    cloud_storage.child('/jur/license/' + license_custom.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/license', filename=license_file_name)
+    cloud_storage.child('/jur/object_usage/' + object_usage.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/object_usage', filename=object_usage_file_name)
+    cloud_storage.child('/jur/registration/' + registration.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/registration', filename=registration_file_name)
+    cloud_storage.child('/jur/shareholder_registration/' + shareholder_registration.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/shareholder_registration', filename=shareholder_registration_file_name)
+    cloud_storage.child('/jur/tax_statement/' + tax_statement.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/jur/tax_statement', filename=tax_statement_file_name)
+
+    zip_name = 'zip_file.zip'
+    z = zipfile.ZipFile(zip_name, 'w')
+
+    z.write(annual_financial_reporting_file_name)
+    z.write(bank_extract_file_name)
+    z.write(leasing_object_file_name)
+    z.write(application_file_name)
+    z.write(chief_officer_assignment_file_name)
+    z.write(chief_officer_id_file_name)
+    z.write(debit_credit_debt_file_name)
+    z.write(creditor_debitor_debt_file_name)
+    z.write(entity_statute_file_name)
+    z.write(equipment_list_file_name)
+    z.write(interim_financial_reporting_file_name)
+    z.write(existing_credits_file_name)
+    z.write(license_file_name)
+    z.write(object_usage_file_name)
+    z.write(registration_file_name)
+    z.write(shareholder_registration_file_name)
+    z.write(tax_statement_file_name)
+
+    z.close()
+
+    return FileResponse(
+        open(zip_name, 'rb'),
+        as_attachment=True,
+        filename='Архив документов клиента.zip'
+    )

@@ -11,7 +11,8 @@ urlpatterns = [
     path('u/jur/new_request', views.jur_new_request),
     path('u/new_request/type', views.new_request_choose_type),
     path('u/phys/new_request', views.phys_new_request),
-    path('a/download/phys', views.download_phys_zip),
+    path('a/phys/download', views.download_phys_zip),
+    path('a/jur/download', views.download_jur_zip),
 
     path('a/home', views.admin_home_page),
     path('a/applications', views.admin_applications_page),
