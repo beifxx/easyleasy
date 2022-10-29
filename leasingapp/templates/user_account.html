@@ -22,8 +22,29 @@
     </table>
     <input type="submit" value="Изменить">
 </form>
+
+
+    <h2>Мои заявки</h2>
+{% for application in applications %}
+
+    <div>
+    <hr>
+    Продукт - {{ application.product.name }}<br>
+    Дата подачи заявки - {{ application.date_applied }}<br>
+    {{ application.client_profile.name }} <br>
+    {{ application.client_profile.last_name }} <br>
+    {{ application.status }}
+
+    <hr>
+    </div>
+
+{% endfor %}
 {% endblock %}
 
+
+
+
+<h2>Мои сделки</h2>
 
 
 

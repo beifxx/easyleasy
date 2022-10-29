@@ -8,12 +8,13 @@ class ClientProfile(models.Model):
     name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    street = models.CharField(max_length=50)
-    house_number = models.CharField(max_length=50)
-    apartment_number = models.CharField(max_length=50)
-    date_of_birth = models.DateField(blank=True, null=True)
-    id_card_num = models.CharField(max_length=9)
+    type = models.CharField(max_length=100, default="Физлицо")
+    #city = models.CharField(max_length=50)
+    #street = models.CharField(max_length=50)
+    #house_number = models.CharField(max_length=50)
+    #apartment_number = models.CharField(max_length=50)
+    #date_of_birth = models.DateField(blank=True, null=True)
+    #id_card_num = models.CharField(max_length=9)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -61,7 +62,7 @@ class Application(models.Model):
     client_profile = models.ForeignKey(to=ClientProfile, on_delete=models.CASCADE, null=True)
     date_applied = models.DateField(null=True)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, null=True)
-    leasing_object = models.CharField(max_length=255, null=True)
+    status = models.CharField(max_length=255, null=True)
 
 
 class Interest_Rate(models.Model):
@@ -98,5 +99,5 @@ class Deal(models.Model):
     regular_payment_size = models.FloatField()
     contract = models.ForeignKey(to=Document, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
-    regularity = models.CharField(max_length=255)
+    payment_by_deed = models.CharField(max_length=255, null=True)
     date_signed = models.DateField()

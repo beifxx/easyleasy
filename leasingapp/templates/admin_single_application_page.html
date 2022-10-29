@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+
+<body>
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <form>
+    {{ form }}
+    {% csrf_token %}
+    <input type="hidden" name="accept" value="accept">
+    <input type="submit" value="Одобрить заявку">
+    </form>
+
+<hr/>
+    <form>
+    {% csrf_token %}
+    <input type="hidden" name="reject" value="reject">
+    <input type="submit" value="Отклонить заявку">
+    </form>
+<hr/>
+
+    <h4>Калькулятор платежей</h4>
+    <form action="javascript:void(0);" name="calculator" onsubmit="calculate()">
+        <input type="number" id="percent">
+        <input type="number" id="loan_amount">
+        <input type="number" id="duration">
+        <input type="submit" value="Рассчитать">
+    </form>
+
+    <p>Ежемесячный платеж: </p><p id="result"></p>
+<hr/>
+<script>
+
+        function calculate() {
+            let percent = document.getElementById("percent").value/100
+            let loan_amount = document.getElementById("loan_amount").value
+            let duration = document.getElementById("duration").value
+            console.log(percent)
+            console.log(loan_amount)
+            console.log(duration)
+            let output = 0
+            output = ((loan_amount)/duration) + (loan_amount*percent)/duration
+            //output.toPrecision(2)
+            document.getElementById('result').innerHTML = output.toPrecision(5)
+        }
+</script>
+
+
+
+    <h2>Данные клиента</h2>
+    <h5>Имя - {{ application.client_profile.name }}</h5>
+    <h5>Фамилия - {{ application.client_profile.last_name }}</h5>
+    <h5>Номер телефона - {{ application.client_profile.phone_number }}</h5>
+    <h5>Продукт - {{ application.product.name }}</h5>
+
+
+    <form target="_blank" method="post" action="/a/download/phys">
+        {% csrf_token %}
+
+    <input name="client_profile" type="hidden" value="{{ application.client_profile.id }}">
+    <input type="submit" value="Скачать архив документов">
+    </form>
+{% endblock %}
+</body>
+</html>
