@@ -16,6 +16,7 @@
     {{ form }}
     {% csrf_token %}
     <input type="hidden" name="accept" value="accept">
+    <input type="hidden" name="application" value="{{ application }}">
     <input type="submit" value="Одобрить заявку">
     </form>
 
@@ -23,6 +24,7 @@
     <form>
     {% csrf_token %}
     <input type="hidden" name="reject" value="reject">
+    <input type="hidden" name="application" value="{{ application }}">
     <input type="submit" value="Отклонить заявку">
     </form>
 <hr/>

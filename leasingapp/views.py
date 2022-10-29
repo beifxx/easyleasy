@@ -576,7 +576,15 @@ def admin_single_application(request, application_id):
             downloadl_link = "/a/jur/download"
         return render(request, 'admin_single_application_page.html',
                       {'application': application, 'form': form, 'download_link': downloadl_link})
-
+    else:
+        if request.POST.get('accept') is not None:
+            Application.objects.filter(application=application).update(status="Одобрена")
+            deal = Deal.objects.create(duration=request.POST.get('duration'), rate=request.POST.get('rate'), loan_amount=request.POST.get('loan_amount'), regular_payment_size=request.POST.get('loan_amount'), status="В анализе",
+                                client_profile=application.client_profile, product=application.product)
+            return render(request, 'admin_application_accepted_page.html', {'deal':deal})
+        else:
+            Application.objects.filter(application=application).update(status="Отклонена")
+            return render(request, 'admin_application_rejected_page.html')
 
 def download_phys_zip(request):
     income_file_name = "Данные о доходах.pdf"
