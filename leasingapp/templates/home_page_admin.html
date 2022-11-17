@@ -1,21 +1,24 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-<html lang="en">
-<head>
+
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'admin_style.css' %}">
 </head>
-<body>
-{% extends 'main.html' %}
+    <body>
+{% include 'navbar_admin.html' %}
 
 {% block content %}
 
-<a href="/a/applications">Заявки на кредит</a>
-<a href="">Заявки на поддержку</a>
-<a href="">Текущие договоры</a>
+    <div class="type">
+    <a href="/a/applications">Заявки на кредит</a>
+    <a href="/a/support_requests">Заявки на поддержку</a>
+    <a href="/a/deeds">Текущие договоры</a>
+    </div>
+
 
 {% endblock %}
 </body>

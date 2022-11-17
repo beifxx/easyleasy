@@ -1,19 +1,28 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'register-style.css' %}">
 </head>
 <body>
+<div class="topnav">
+  <a class="logo" href="">EASYLEASY</a>
+</div>
 {% block content %}
+        <div class="register_form">
+
 <form method="POST">
     {% csrf_token %}
     <table>
         {{ form }}
     </table>
-    <a href="/register">Войти</a>
-    <input type="submit" value="Зарегистрироваться">
+    <a class="login_link" href="/">Войти</a> <br />
+    <input class="register_button" type="submit" value="Зарегистрироваться">
 </form>
+        </div>
 {% endblock %}
 </body>
 </html>

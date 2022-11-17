@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>offerinos</title>
+</head>
+<body>
+{% extends 'main.html' %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <label>
+        <select name="desired_type">
+            <option value="Транспорт">Транспорт</option>
+            <option value="Оборудование">Оборудование</option>
+            <option value="Недвижимость">Недвижимость</option>
+        </select>
+    </label>
+    <input type="submit" value="Подобрать">
+<h3>При введенных параметрах </h3>
+</form>
+    {% for product in result %}
+    <h5>
+    Продукт - {{ product.product_name }}
+        <br />
+    Минимальная ставка при введенных параметрах - {{ product.rate }}
+    </h5>
+        <hr />
+    {% endfor %}
+{% endblock %}
+</body>
+</html>

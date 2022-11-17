@@ -1,20 +1,29 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>hahaha</title>
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'support_style.css' %}">
 </head>
-<body>
-{% extends 'main.html' %}
+    <body>
+{% include 'navbar_user.html' %}
+
 
 {% block content %}
+    <div class="support_form">
+    <h3>Запрос на поддержку</h3>
 <form method="POST">
     {% csrf_token %}
     <table>
         {{ form }}
     </table>
-    <input type="submit" value="Отправить запрос">
+    <input class="submit" type="submit" value="Отправить запрос">
 </form>
+    </div>
+
 {% endblock %}
 
 

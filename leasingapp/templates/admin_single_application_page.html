@@ -8,23 +8,21 @@
 </head>
 
 <body>
-{% extends 'main.html' %}
+{% extends 'main_admin.html' %}
 
 {% block content %}
 
-    <form>
+    <form method="post">
     {{ form }}
     {% csrf_token %}
     <input type="hidden" name="accept" value="accept">
-    <input type="hidden" name="application" value="{{ application }}">
     <input type="submit" value="Одобрить заявку">
     </form>
 
 <hr/>
-    <form>
+    <form  method="post">
     {% csrf_token %}
     <input type="hidden" name="reject" value="reject">
-    <input type="hidden" name="application" value="{{ application }}">
     <input type="submit" value="Отклонить заявку">
     </form>
 <hr/>
@@ -63,6 +61,7 @@
     <h5>Номер телефона - {{ application.client_profile.phone_number }}</h5>
     <h5>Продукт - {{ application.product.name }}</h5>
     <h5>Клиент - {{ application.client_profile.type }}</h5>
+    <h5>Статус - {{ application.status }}</h5>
 
 
     <form id="download_form" target="_blank" method="post" action="{{ download_link }}">

@@ -1,11 +1,15 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>hahaha</title>
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'support_style.css' %}">
 </head>
-<body>
-{% extends 'main.html' %}
+    <body>
+{% include 'navbar_user.html' %}
 
 {% block content %}
 {#<form method="POST">#}
@@ -39,14 +43,44 @@
     </div>
 
 {% endfor %}
-{% endblock %}
 
 
 
 
 <h2>Мои сделки</h2>
+{% for deed in deeds %}
 
+    <div>
+    <hr>
+    Продукт - {{ deed.product.name }}<br>
+    {% if deed.date_signed != None %}
+            <h5>Дата подписания - {{ deed.date_signed }} <br> </h5>
+    {% endif %}
+    Сумма - {{ deed.loan_amount }} <br>
+    Размер платежа - {{ deed.regular_payment_size }} <br>
+    Процентная ставка - {{ deed.rate }}% <br>
+    Размер платежа - {{ deed.regular_payment_size }} <br>
 
+    {% if deed.contract != None %}
+            <form target="_blank" method="post" action="/download_contract">
+            {% csrf_token %}
+
+            <input name="client_profile" type="hidden" value="{{ deed.client_profile.id }}">
+            <input type="submit" value="Скачать копию договора">
+            </form>
+            <form target="_blank" method="post" action="/get_mail">
+            {% csrf_token %}
+
+            <input name="deed" type="hidden" value="{{ deed.client_profile_id }}">
+            <input type="submit" value="Получить на почту">
+            </form>    {% endif %}
+    {{ application.status }}
+
+    <hr>
+    </div>
+{% endfor %}
+
+{% endblock %}
 
 
 </body>

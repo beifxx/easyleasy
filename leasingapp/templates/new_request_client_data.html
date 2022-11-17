@@ -1,12 +1,15 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>hahaha</title>
-</head>
-<body>
-{% extends 'main.html' %}
 
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'new_application_style.css' %}">
+</head>
+    <body>
+{% include 'navbar_user.html' %}
 {% block content %}
 
 <form method="POST" enctype="multipart/form-data">
@@ -14,13 +17,14 @@
     <table>
         {{ form }}
     </table>
-    <select name="product_id">
+        <select class="custom-select" name="product_id" style="width:200px;">
     {% for product in products %}
         <option value="{{ product.id }}">{{ product.name }}</option>
     {% endfor %}
 
     </select>
-    <input type="submit" value="Далее">
+<br/>
+    <input class="submit_button" type="submit" value="Далее">
 </form>
 {% endblock %}
 

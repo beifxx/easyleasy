@@ -1,50 +1,48 @@
-import mimetypes
-import shutil
+import smtplib, ssl
+import os
 import zipfile
-from zipfile import ZipFile
+from datetime import date, datetime
 
 import firebase_admin
+import numpy
+import pyrebase
+from dateutil.relativedelta import relativedelta
+from django.contrib.auth import authenticate, login
+from django.core.files.storage import default_storage
+from django.db.models import Avg
+from django.http import FileResponse
+from django.shortcuts import render, redirect
 from firebase_admin import credentials
 
-from django.shortcuts import render, redirect
-import os
-from django.http import HttpResponse, FileResponse
-from django.template import loader
-from datetime import date, datetime
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from leasingapp.models import *
-import pyrebase
-from django.core.files.storage import default_storage
 from leasingapp.forms import *
-import json
-
 
 firebaseConfig = {
-        'apiKey': "AIzaSyDZBOo80y_kLGMbeZRbmuB9QtxOoFpZQgE",
-        'authDomain': "easy-leasy-33a51.firebaseapp.com",
-        'databaseURL': "https://easy-leasy-33a51-default-rtdb.europe-west1.firebasedatabase.app",
-        'projectId': "easy-leasy-33a51",
-        'storageBucket': "easy-leasy-33a51.appspot.com",
-        'messagingSenderId': "614641626422",
-        'appId': "1:614641626422:web:921d06880bb4b7172c9797"
-    }
+    'apiKey': "AIzaSyDZBOo80y_kLGMbeZRbmuB9QtxOoFpZQgE",
+    'authDomain': "easy-leasy-33a51.firebaseapp.com",
+    'databaseURL': "https://easy-leasy-33a51-default-rtdb.europe-west1.firebasedatabase.app",
+    'projectId': "easy-leasy-33a51",
+    'storageBucket': "easy-leasy-33a51.appspot.com",
+    'messagingSenderId': "614641626422",
+    'appId': "1:614641626422:web:921d06880bb4b7172c9797"
+}
+
 firebase = pyrebase.initialize_app(firebaseConfig)
 cloud_storage = firebase.storage()
 cred = credentials.Certificate({
-        "type": "service_account",
-        "project_id": "easy-leasy-33a51",
-        "private_key_id": "343efe54dfe2076bbfbcbde2820fa0148ba1d697",
-        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChTNqIoyd/8CFU\ndFStqwo96xSDIe+frpjrYUoAaRMqw+oBDvv1MeN2pnU+8ytW8jPxKDLJkKABJjXd\nZFJaDB8c22po/NyR9r2nt8A1hw9CCKd5naHFcA2e8tlbLmpKCe8+Myz5MhTRJK1p\n4t0M9dUXj2zhwYfvlg7ngvcefdcxHP9y8ZdMcVeEZ5Ql5Lv0GrnYuFPDwMjpqtWV\nZsDqHrTksjYKOb8CdBX0+6Z5I+DS9myzYZuaM+hijNzw4XXZw/CPRlIQXbss45A6\naMHZ6QBabPLKI3UcPsfzvvZv6ig2EihS2RLgbON7FncZtxKkHqTe/mi+06qkcrsk\nKHM3DNFRAgMBAAECggEABz8iVknWMsuWrmpSNOyJQkI3IrO58JecgSlWyhvuY4PN\nFeJsHsDwsi+aTDYKjWvGOksPCmU3+wqSGEczN/PGy2TELBaoJi/1Uf1Rt6tAsTvI\nTRDFks7iSHDVTmEQdLvA3C+FEWZW7xUnFqm9j/Z/bgE16BKUyTEZrFGtnoNoJpRP\nq/PzC40JtNAof5Thu0auOe2Z+E6fJXOlsfBOgAHfW67pFUjYWQaPWS/4bZyfdguh\naxW9X/Ef8h9RdurjN08LOiX7WpJ5lWnAwU8JY8mH5LpfmW4TD2gMIUJ5t63s6bY0\nwXRXCwWRg45zJh6wioPfEsFBxnw96Vz8aSw2C9cxPQKBgQDO+Pvj1mz4+4WGLP12\niWc5yzhGpSNrz05C+k2GLv/q/pxc8LHYPq/1nSbWmm7CwVHWtt3BznYET2uFnZWZ\nUMUKN4e8mRZAadzx/BXb/aQ7LPOOJGWMPCOcUnaR7lZZmg47hS1H6vZIWqajHb1S\nh9dVYQ7A5YA3iMZWHOZCxj2YywKBgQDHgkCtnv2ffy+OET6RP+M4H7dM3AUjetyE\nNW3C64vRJ2q6ctTSv823Roe5RWqCyDGo9ysnd4iwdwJO3v0xLNavDpM9oW8r8J1X\nDsg3FXyH4v7ixCTBAxQNWIrwEjNjwSkCtullDguHLROELPg3AblVWZBQ5UtM0/OJ\nYyLXJFVm0wKBgQClAskAWwJCd3V7Bf+GNAICh8z0NdDJsVu59ok8Q9hxaFENoDCK\nMWBkN8ixLCrGRw6SWvTuAUcCJLearYqJ02VkweUMLhkZfc1TeCGNZOk87Je5abc0\nWPYjOXOi4RwjD7ntJj51qhR0lyFnxtwcIoVBYsI6dD8HB5rpKN1Du318hQKBgCP3\nqH9khWbGwCUFmNkIwobwuNQDam2+DZlMJJCadGdtisE4SIQCDi03auqMyCnxu3ox\nrTb9RshBfEoJy22dHssKfqMCwo8SXts+D/xWRFAfLUJmiBW/31KUnt+u+FLIlQMn\nRKZyRMPG7ZjLnqgUCHyJnAnpfIzKPUKMe9B7fWX/AoGANBoofs8bAvD70r2vparl\nZlrL/lm0fqyQ7cExD/YsdxS235mHQFa1nyLgjTovvLe42XARJ6cbqCcH09+12D16\nRaESv8FA0CzQYMaoeZsoc7xLIPhcx7JE8/3cq2aa2qcKhT9VsLqI/j9d6BghMJlk\nxdh/woJoomS0SdvIZX1OpvA=\n-----END PRIVATE KEY-----\n",
-        "client_email": "firebase-adminsdk-x78xi@easy-leasy-33a51.iam.gserviceaccount.com",
-        "client_id": "115483754411798145818",
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-x78xi%40easy-leasy-33a51.iam.gserviceaccount.com"
-    }
-    )
+    "type": "service_account",
+    "project_id": "easy-leasy-33a51",
+    "private_key_id": "343efe54dfe2076bbfbcbde2820fa0148ba1d697",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChTNqIoyd/8CFU\ndFStqwo96xSDIe+frpjrYUoAaRMqw+oBDvv1MeN2pnU+8ytW8jPxKDLJkKABJjXd\nZFJaDB8c22po/NyR9r2nt8A1hw9CCKd5naHFcA2e8tlbLmpKCe8+Myz5MhTRJK1p\n4t0M9dUXj2zhwYfvlg7ngvcefdcxHP9y8ZdMcVeEZ5Ql5Lv0GrnYuFPDwMjpqtWV\nZsDqHrTksjYKOb8CdBX0+6Z5I+DS9myzYZuaM+hijNzw4XXZw/CPRlIQXbss45A6\naMHZ6QBabPLKI3UcPsfzvvZv6ig2EihS2RLgbON7FncZtxKkHqTe/mi+06qkcrsk\nKHM3DNFRAgMBAAECggEABz8iVknWMsuWrmpSNOyJQkI3IrO58JecgSlWyhvuY4PN\nFeJsHsDwsi+aTDYKjWvGOksPCmU3+wqSGEczN/PGy2TELBaoJi/1Uf1Rt6tAsTvI\nTRDFks7iSHDVTmEQdLvA3C+FEWZW7xUnFqm9j/Z/bgE16BKUyTEZrFGtnoNoJpRP\nq/PzC40JtNAof5Thu0auOe2Z+E6fJXOlsfBOgAHfW67pFUjYWQaPWS/4bZyfdguh\naxW9X/Ef8h9RdurjN08LOiX7WpJ5lWnAwU8JY8mH5LpfmW4TD2gMIUJ5t63s6bY0\nwXRXCwWRg45zJh6wioPfEsFBxnw96Vz8aSw2C9cxPQKBgQDO+Pvj1mz4+4WGLP12\niWc5yzhGpSNrz05C+k2GLv/q/pxc8LHYPq/1nSbWmm7CwVHWtt3BznYET2uFnZWZ\nUMUKN4e8mRZAadzx/BXb/aQ7LPOOJGWMPCOcUnaR7lZZmg47hS1H6vZIWqajHb1S\nh9dVYQ7A5YA3iMZWHOZCxj2YywKBgQDHgkCtnv2ffy+OET6RP+M4H7dM3AUjetyE\nNW3C64vRJ2q6ctTSv823Roe5RWqCyDGo9ysnd4iwdwJO3v0xLNavDpM9oW8r8J1X\nDsg3FXyH4v7ixCTBAxQNWIrwEjNjwSkCtullDguHLROELPg3AblVWZBQ5UtM0/OJ\nYyLXJFVm0wKBgQClAskAWwJCd3V7Bf+GNAICh8z0NdDJsVu59ok8Q9hxaFENoDCK\nMWBkN8ixLCrGRw6SWvTuAUcCJLearYqJ02VkweUMLhkZfc1TeCGNZOk87Je5abc0\nWPYjOXOi4RwjD7ntJj51qhR0lyFnxtwcIoVBYsI6dD8HB5rpKN1Du318hQKBgCP3\nqH9khWbGwCUFmNkIwobwuNQDam2+DZlMJJCadGdtisE4SIQCDi03auqMyCnxu3ox\nrTb9RshBfEoJy22dHssKfqMCwo8SXts+D/xWRFAfLUJmiBW/31KUnt+u+FLIlQMn\nRKZyRMPG7ZjLnqgUCHyJnAnpfIzKPUKMe9B7fWX/AoGANBoofs8bAvD70r2vparl\nZlrL/lm0fqyQ7cExD/YsdxS235mHQFa1nyLgjTovvLe42XARJ6cbqCcH09+12D16\nRaESv8FA0CzQYMaoeZsoc7xLIPhcx7JE8/3cq2aa2qcKhT9VsLqI/j9d6BghMJlk\nxdh/woJoomS0SdvIZX1OpvA=\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-x78xi@easy-leasy-33a51.iam.gserviceaccount.com",
+    "client_id": "115483754411798145818",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-x78xi%40easy-leasy-33a51.iam.gserviceaccount.com"
+}
+)
 firebase_admin.initialize_app(cred)
+
 
 def login_page(request):
     for parent, dirnames, filenames in os.walk('../easyleasy'):
@@ -165,7 +163,9 @@ def my_user_account(request):  # TODO fix the thing
     password_form = Change_my_password_form()
     if request.method == 'GET':
         applications = Application.objects.filter(client_profile__user=request.user)
-        return render(request, 'user_account.html', {'form_password': password_form, 'applications': applications})
+        deeds = Deal.objects.filter(client_profile__user=request.user)
+        return render(request, 'user_account.html',
+                      {'form_password': password_form, 'applications': applications, 'deeds': deeds})
     else:
         user = User.objects.get(id=request.user.id)
         # if request.POST.get('username') != '':
@@ -578,13 +578,31 @@ def admin_single_application(request, application_id):
                       {'application': application, 'form': form, 'download_link': downloadl_link})
     else:
         if request.POST.get('accept') is not None:
-            Application.objects.filter(application=application).update(status="Одобрена")
-            deal = Deal.objects.create(duration=request.POST.get('duration'), rate=request.POST.get('rate'), loan_amount=request.POST.get('loan_amount'), regular_payment_size=request.POST.get('loan_amount'), status="В анализе",
-                                client_profile=application.client_profile, product=application.product)
-            return render(request, 'admin_application_accepted_page.html', {'deal':deal})
+            application.status = "Одобрена"
+            application.save()
+            if Deal.objects.filter(client_profile=application.client_profile).exists():
+                deed = Deal.objects.get(client_profile=application.client_profile)
+                deed.duration = request.POST.get('duration')
+                deed.rate = request.POST.get('rate')
+                deed.loan_amount = request.POST.get('loan_amount')
+                deed.regular_payment_size = request.POST.get('loan_amount')
+                deed.status = "В анализе"
+                deed.product = application.product
+                deed.save()
+            else:
+                deed = Deal.objects.create(duration=request.POST.get('duration'),
+                                           rate=request.POST.get('rate'),
+                                           loan_amount=request.POST.get('loan_amount'),
+                                           regular_payment_size=request.POST.get('loan_amount'),
+                                           status="В анализе",
+                                           client_profile=application.client_profile,
+                                           product=application.product)
+            return render(request, 'admin_single_deed_page.html', {'deed': deed})
         else:
-            Application.objects.filter(application=application).update(status="Отклонена")
-            return render(request, 'admin_application_rejected_page.html')
+            application.status = "Отклонена"
+            application.save()
+            return render(request, 'admin_applications.html')
+
 
 def download_phys_zip(request):
     income_file_name = "Данные о доходах.pdf"
@@ -645,7 +663,6 @@ def download_phys_zip(request):
 
 def download_jur_zip(request):
     print("JURY TIIIIIIIIIMEEEEEE")
-
 
     annual_financial_reporting_file_name = "Годовая Финансовая отчетность, с отметкой ИМНС, за последние два (2) года.pdf"
     bank_extract_file_name = "Справка банка, в котором обслуживается Клиент.pdf"
@@ -765,3 +782,189 @@ def download_jur_zip(request):
         as_attachment=True,
         filename='Архив документов клиента.zip'
     )
+
+
+def support_requests_page(request):
+    for parent, dirnames, filenames in os.walk('../easyleasy'):
+        for fn in filenames:
+            if fn.lower().endswith('.pdf'):
+                os.remove(os.path.join(parent, fn))
+    if request.method == 'GET':
+        support_requests = Support_Request.objects.all()
+        return render(request, 'admin_support_requests_page.html', {'support_requests': support_requests})
+    else:
+        request_delete = Support_Request.objects.get(id=request.POST.get('request_id'))
+        request_delete.delete()
+        support_requests = Support_Request.objects.all()
+        return render(request, 'admin_support_requests_page.html', {'support_requests': support_requests})
+
+
+def deeds_page(request):
+    for parent, dirnames, filenames in os.walk('../easyleasy'):
+        for fn in filenames:
+            if fn.lower().endswith('.pdf'):
+                os.remove(os.path.join(parent, fn))
+    deeds = Deal.objects.all()
+    return render(request, 'admin_deeds_page.html', {'deeds': deeds})
+
+
+def admin_single_deed(request, deed_id):
+    for parent, dirnames, filenames in os.walk('../easyleasy'):
+        for fn in filenames:
+            if fn.lower().endswith('.pdf'):
+                os.remove(os.path.join(parent, fn))
+    deed = Deal.objects.get(client_profile_id=deed_id)
+    if request.method == 'GET':
+        form = Admin_deed_form()
+        if deed.client_profile.type == "Физлицо":
+            downloadl_link = "/a/phys/download"
+        else:
+            downloadl_link = "/a/jur/download"
+        return render(request, 'admin_single_deed_page.html',
+                      {'deed': deed, 'form': form, 'download_link': downloadl_link})
+    if request.method == 'POST':
+        if request.POST.get('duration') != '':
+            deed.duration = request.POST.get('duration')
+        if request.POST.get('rate') != '':
+            deed.rate = request.POST.get('rate')
+        if request.POST.get('loan_amount') != '':
+            deed.loan_amount = request.POST.get('loan_amount')
+        if request.POST.get('regular_payment_size') != '':
+            deed.regular_payment_size = request.POST.get('regular_payment_size')
+        if request.POST.get('date_signed') != '':
+            deed.date_signed = request.POST.get('date_signed')
+        deed.status = request.POST.get('status_update')
+        if request.FILES.get('contract', False) is not False:
+            contract_file = request.FILES['contract']
+            file_name = default_storage.save(contract_file.name,
+                                             contract_file)  # save file to root directory
+
+            if Document.objects.filter(client_profile=deed.client_profile, definition='contract').exists():
+                contract_document = Document.objects.get(client_profile=deed.client_profile, definition='contract')
+                contract_name = contract_document.id.__str__() + '.pdf'
+
+                os.rename(file_name, contract_name)  # rename it to unique id from DB
+                cloud_storage.child('/contract').child(contract_name).put(contract_name)
+                deed.contract = contract_document
+            else:
+                contract_document = Document.objects.create(definition='contract',
+                                                            client_profile=deed.client_profile)
+                contract_name = contract_document.id.__str__() + '.pdf'
+
+                os.rename(file_name, contract_name)  # rename it to unique id from DB
+                cloud_storage.child('/contract').child(contract_name).put(
+                    contract_name)
+                deed.contract = contract_document
+                os.remove(contract_name)  # delete file from root directory after uploading to cloud
+        deed.save()
+        request.method = 'GET'
+        return admin_single_deed(request, deed_id)
+
+
+def download_contract(request):
+    contract_name = "Копия договора.pdf"
+
+    contract = Document.objects.filter(client_profile_id=request.POST.get('client_profile'),
+                                       definition="contract").first()
+
+    cloud_storage.child('/contract/' + contract.id.__str__() + '.pdf').download(
+        'gs://easy-leasy-33a51.appspot.com/contract', filename=contract_name)
+
+    return FileResponse(
+        open(contract_name, 'rb'),
+        as_attachment=True,
+        filename='Копия договора.pdf'
+    )
+
+
+def admin_stats(request):
+    clients = ClientProfile.objects.all()
+    jur_part = (ClientProfile.objects.filter(type='Физлицо').count() * 100 / clients.count()).__trunc__()
+    phys_part = 100 - jur_part
+
+    av_loan_amount = Deal.objects.all().aggregate(Avg('loan_amount'))
+    av_duration = Deal.objects.all().aggregate(Avg('duration'))
+
+    deals = Deal.objects.all()
+    immovable_part = (Deal.objects.filter(product__type="Недвижимость").count() * 100 / deals.count()).__trunc__()
+
+    equipment_part = (Deal.objects.filter(product__type="Оборудование").count() * 100 / deals.count()).__trunc__()
+
+    transport_part = (Deal.objects.filter(product__type="Транспорт").count() * 100 / deals.count()).__trunc__()
+
+    return render(request, 'admin_stats.html',
+                  {'jur_part': jur_part, 'phys_part': phys_part, 'av_loan_amount': av_loan_amount,
+                   'av_duration': av_duration,
+                   'transport_part': transport_part, 'equipment_part': equipment_part,
+                   'immovable_part': immovable_part})
+
+
+def get_mail(request):
+    port = 465  # For SSL
+    password = 'dmfmphoqyckhcmjg'
+    user_email = request.user.email
+    deed = Deal.objects.filter(client_profile_id=request.POST.get('deed')).first()
+    # Create a secure SSL context
+    context = ssl.create_default_context()
+
+    dates = numpy.empty(deed.duration, dtype=object)
+    date_list = '\nДаты будущих платежей:'
+    date_ = deed.date_signed
+    for i in dates:
+        date_ += relativedelta(months=+1)
+
+        date_list += '\n' + datetime.strftime(date_, "%m/%d/%y")
+
+    message = 'Данные о сделке\n' + 'Продукт - ' + deed.product.name + '\nСумма - ' + deed.loan_amount.__str__() + ' рублей\nРазмер платежа - ' + deed.regular_payment_size.__str__() + ' рублей\nПроцентная ставка - ' + deed.rate.__str__() + '%\nДлительность - ' + deed.duration.__str__() + ' месяцев' + date_list
+    print(request.user.email)
+
+    msg = 'From: {}\r\nTo: {}\r\nSubject: {}\n\n{}'.format(
+        "test.artsiom@yandex.com", user_email,
+        'Данные о сделке ' + deed.client_profile.name + ' ' + deed.client_profile.last_name, message
+    )
+    with smtplib.SMTP_SSL("smtp.yandex.com", port, context=context) as server:
+        server.login("test.artsiom@yandex.com", password)
+        server.sendmail("test.artsiom@yandex.com", user_email, msg.encode('utf8'))
+    return render(request, 'dummy_tab.html')
+
+
+def get_best_offer(request):
+    form = Best_offer_form()
+    if request.method == 'GET':
+        return render(request, 'get_best_offer.html', {'form': form})
+    else:
+        products = Product.objects.filter(type=request.POST.get('desired_type'),
+                                          max_amount__gte=request.POST.get('desired_amount'),
+                                          min_amount__lte=request.POST.get('desired_amount'),
+                                          max_duration__gte=request.POST.get('desired_duration'),
+                                          min_duration__lte=request.POST.get('desired_duration'))
+        rate_set = []
+        final_set = []
+
+        class Top3:
+            def __init__(self, product_name, rate_top):
+                self.product_name = product_name
+                self.rate = rate_top
+
+        for id_p, product in enumerate(products):
+            rate = Interest_Rate.objects.filter(product=product,
+                                                duration_more_than__lte=request.POST.get('desired_duration'),
+                                                duration_less_than_or_equal__gte=request.POST.get(
+                                                    'desired_duration')).first()
+
+            print(rate)
+            rate_set.append(rate)
+
+        for i in range(0, 3):
+            max1 = 1.0
+            rate = None
+            for j in range(len(rate_set)):
+                if rate_set[j].rate < max1:
+                    max1 = rate_set[j].rate
+                    rate = Interest_Rate.objects.filter(product=rate_set[j].product, rate=rate_set[j].rate).first()
+            rate_set.remove(rate)
+            final_set.append(Top3(rate.product.name, (rate.rate*100).__str__() + '%'))
+
+
+        print(final_set[0].product_name)
+        return render(request, 'get_best_offer.html', {'form': form, 'result': final_set})

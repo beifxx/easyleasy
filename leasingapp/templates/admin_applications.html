@@ -5,13 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-{% extends 'main.html' %}
+{% extends 'main_admin.html' %}
 
 {% block content %}
     {% for application in applications %}
     <div class="application_card">
     <h2><a href="/a/application/{{ application.id }}">{{ application.product.name }}</a> </h2>
-
+    <h2><b>{{ application.status }}</b></h2>
     <p>{{ application.client_profile.name }} {{ application.client_profile.last_name }}, {{ application.date_applied }}</p>
     <hr />
     </div>

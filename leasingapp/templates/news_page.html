@@ -1,12 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+        <link rel="stylesheet" href="{% static 'news_style.css' %}">
+
 </head>
 <body>
-{% extends 'main.html' %}
-
+{% include 'navbar_user.html' %}
 {% block content %}
     {% for newsflash in news %}
     <div class="newsflash">
@@ -14,6 +16,7 @@
 
     <p>{{ newsflash.description }}</p>
     </div>
+        <hr/>
     {% endfor %}
 
 {% endblock %}

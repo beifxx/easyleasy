@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'home_user.css' %}">
 </head>
 <body>
-{% extends 'main.html' %}
-
+{% include 'navbar_user.html' %}
 {% block content %}
     <div class="newsflash">
     <h1>Последние новости</h1>
@@ -24,10 +25,10 @@
     <h1>Наши продукты</h1>
 
     <h2><a href="/u/product/{{ product.id }}">{{ product.name }}</a> </h2>
-        <a href="/u/product/{{ product.id }}">Подробнее</a>   <a href="/u/support/">Заказать консультацию</a>
+        <a class="blue_link" href="/u/product/{{ product.id }}">Подробнее</a>   <a class="blue_link" href="/u/support/">Заказать консультацию</a>
         <hr />
     <p>Сроки от {{ product.min_duration }} месяцев, сумма от {{ product.min_amount }} рублей</p>
-
+    <a class="get_best_offer_link" href="/u/get_best">Подобрать самые выгодные предложения по параметрам</a>
 </div>
 
 

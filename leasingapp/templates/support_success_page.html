@@ -1,11 +1,15 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>hahaha</title>
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'support_style.css' %}">
 </head>
-<body>
-{% extends 'main.html' %}
+    <body>
+{% include 'navbar_user.html' %}
 
 {% block content %}
 <p>Успех! Наш сотрудник свяжется с вами по телефону в ближайшее время</p>

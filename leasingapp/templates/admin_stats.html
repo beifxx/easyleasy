@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'admin_style.css' %}">
+</head>
+    <body>
+{% include 'navbar_admin.html' %}
+
+{% block content %}
+    <div id="canvas_div_pdf">
+    <div>
+    Средний срок займа - {{ av_duration.duration__avg }} месяцев<br>
+    </div>
+    <div>
+    Средний размер займа - {{ av_loan_amount.loan_amount__avg }} рублей <br>
+
+    </div>
+    <div>
+    Процент физических лиц среди клиентов - {{ phys_part }}<br>
+
+    </div>
+    <div>
+    Процент юридических лиц среди клиентов - {{ jur_part }}
+
+    </div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script>
+window.onload = function() {
+
+    let chart_1 = new CanvasJS.Chart("chartContainer_phys_or_jur", {
+        animationEnabled: true,
+        title: {
+            text: "Соотношение физических и юридических лиц"
+        },
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{label} {y}",
+            dataPoints: [
+                {y: {{ phys_part }}, label: "Физлица"},
+                {y: {{ jur_part }}, label: "Юрлица"}
+            ]
+        }]
+    });
+    chart_1.render();
+
+    let chart_2 = new CanvasJS.Chart("chartContainer_product_type", {
+        animationEnabled: true,
+        title: {
+            text: "Соотношение программ по типу"
+        },
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{label} {y}",
+            dataPoints: [
+                {y: {{ equipment_part }}, label: "Оборудование"},
+                {y: {{ transport_part }}, label: "Транспорт"},
+                {y: {{ immovable_part }}, label: "Недвижимость"}
+            ]
+        }]
+    });
+    chart_2.render();
+}
+  </script>
+    <div id="chartContainer_phys_or_jur" style="height: 300px; width: 100%;"></div>
+        <hr>
+    <div id="chartContainer_product_type" style="height: 300px; width: 100%;"></div>
+
+
+
+    <script>
+        function getPDF(){
+
+		var HTML_Width = document.getElementById('canvas_div_pdf').offsetWidth;
+		var HTML_Height = document.getElementById('canvas_div_pdf').offsetHeight;
+		var top_left_margin = 15;
+		var PDF_Width = HTML_Width+(top_left_margin*3);
+		var PDF_Height = (PDF_Width*3)+(top_left_margin*2);
+		var canvas_image_width = HTML_Width;
+		var canvas_image_height = HTML_Height;
+
+		var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+
+
+		html2canvas(document.getElementById('canvas_div_pdf'),{allowTaint:true}).then(function(canvas) {
+			canvas.getContext('2d');
+
+			console.log(canvas.height+"  "+canvas.width);
+
+
+			var imgData = canvas.toDataURL("image/jpeg", 1.0);
+			var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+		    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+
+
+			for (var i = 1; i <= totalPDFPages; i++) {
+				pdf.addPage(PDF_Width, PDF_Height);
+				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+			}
+
+		    pdf.save("Статистика.pdf");
+        });
+	};
+    </script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    </div>
+    <button onclick="getPDF()">Скачать документ</button>
+
+{% endblock %}
+</body>
+</html>

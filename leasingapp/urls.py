@@ -13,6 +13,14 @@ urlpatterns = [
     path('u/phys/new_request', views.phys_new_request),
     path('a/phys/download', views.download_phys_zip),
     path('a/jur/download', views.download_jur_zip),
+    path('download_contract', views.download_contract),
+    path('a/support_requests', views.support_requests_page),
+    path('a/deeds', views.deeds_page),
+    path('a/deed/<int:deed_id>', views.admin_single_deed),
+    path('a/stats', views.admin_stats),
+    path('get_mail', views.get_mail),
+    path('u/get_best', views.get_best_offer),
+
 
     path('a/home', views.admin_home_page),
     path('a/applications', views.admin_applications_page),

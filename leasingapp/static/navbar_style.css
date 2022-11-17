@@ -1,0 +1,76 @@
+@font-face{font-family:'Montserrat';src:url('Montserrat-VariableFont_wght.ttf')}
+
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; color:#8E8F90; }
+a:focus { text-decoration: none; color:#8E8F90; }
+a:hover, a:active { text-decoration: none; color:#8E8F90 }
+
+body {
+    margin: 0;
+    font-family: Montserrat, serif !important;
+    background-color: #EDEEF0;
+}
+
+
+
+.topnav {
+    background-color: #74319C;
+    display: flex;
+    padding-bottom: 1.5em;
+}
+.logo {
+    color: white;
+    text-decoration: none;
+    margin-left: 3em;
+    font-size: 1.5em;
+    margin-top: 1em;
+}
+.login_form {
+    display: inline-block;
+    margin-left: 37%;
+    margin-top: 7em;
+    border-radius: 0.2em;
+    padding: 3em;
+    background-color: white;
+}
+
+.register_link {
+    margin-left: 3em;
+    color: #8E8F90;
+    text-decoration: underline;
+}
+
+.login_button {
+    border: none;
+    background-color: #74319C;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    color: white;
+    font-style: normal;
+    margin-left: 7em;
+    margin-top: 1em;
+    font-weight: 400;
+}
+
+.login_button:hover {
+    cursor: pointer;
+}
+
+.username_login {
+    border: 0.01em solid #DCE1E5;
+    background-color: #F7F8FA;
+    padding-right: 7em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+
+.password_login {
+    border: 0.01em solid #DCE1E5;
+    background-color: #F7F8FA;
+    padding-right: 7em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}

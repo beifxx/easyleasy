@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'main_admin.html' %}
+
+{% block content %}
+    {% for deed in deeds %}
+    <div class="deed_card">
+    <h2><a href="/a/deed/{{ deed.client_profile_id }}">{{ deed.product.name }}</a> </h2>
+    <h2><b>{{ deed.status }}</b></h2>
+    <p>{{ deed.client_profile.name }} {{ deed.client_profile.last_name }}</p>
+    <hr />
+    </div>
+    {% endfor %}
+
+{% endblock %}
+</body>
+</html>

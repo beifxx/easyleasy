@@ -1,0 +1,132 @@
+@font-face{font-family:'Montserrat';src:url('Montserrat-VariableFont_wght.ttf')}
+
+a:visited { text-decoration: none; color: inherit }
+a:hover { text-decoration: none; color:#8E8F90; }
+a:focus { text-decoration: none; color:#8E8F90; }
+a:hover, a:active { text-decoration: none; color:#8E8F90 }
+
+body {
+    margin: 0;
+    font-family: Montserrat, serif !important;
+    background-color: #EDEEF0;
+}
+
+.blue_link {
+    color: #23A6F0 !important;
+}
+
+.topnav {
+    background-color: #74319C;
+    display: flex;
+    padding-bottom: 0.5em;
+}
+.topnav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 3em;
+    font-size: 1.5em;
+    margin-top: 1em;
+}
+
+.new_request_link {
+    background-color: white;
+    color: #74319C !important;
+    padding: 0.6em;
+    margin-top: 0.3em !important;
+    border-radius: 7px;
+}
+.logo {
+    color: white;
+    text-decoration: none;
+    margin-left: 3em;
+    font-size: 1.5em;
+    margin-top: 1em;
+}
+.login_form {
+    display: inline-block;
+    margin-left: 37%;
+    margin-top: 7em;
+    border-radius: 0.2em;
+    padding: 3em;
+    background-color: white;
+}
+
+.register_link {
+    margin-left: 3em;
+    color: #8E8F90;
+    text-decoration: underline;
+}
+
+.login_button {
+    border: none;
+    background-color: #74319C;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    color: white;
+    font-style: normal;
+    margin-left: 7em;
+    margin-top: 1em;
+    font-weight: 400;
+}
+
+
+
+input {
+    border: 0.01em solid #DCE1E5;
+    background-color: #F7F8FA;
+    padding-right: 7em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.submit:hover {
+    cursor: pointer;
+}
+
+.submit {
+    border: none;
+    background-color: #74319C;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    color: white;
+    font-style: normal;
+    margin-left: 4em;
+    margin-top: 1em;
+    font-weight: 400;
+}
+
+.support_form {
+    display: inline-block;
+    margin-left: 37%;
+    margin-top: 7em;
+    border-radius: 0.2em;
+    padding: 3em;
+    background-color: white;
+}
+
+h3 {
+    margin-left: 1.3em;
+    margin-top: -1em;
+}
+
+.leasing_type {
+    background-color: white;
+    display: inline-block;
+    margin-left: 24em;
+    margin-top: 9em;
+    padding: 4em;
+}
+
+.leasing_type a {
+    margin-left: 2em;
+    color: white;
+    background-color: #74319C;
+    padding-right: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+    border-radius: 4px;
+}

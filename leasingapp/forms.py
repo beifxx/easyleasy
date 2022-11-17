@@ -3,29 +3,39 @@ from leasingapp.models import *
 
 
 class Login_form(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'username_login'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password_login'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'username_login', 'placeholder': 'Имя пользователя'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password_login', 'placeholder': 'Пароль'}))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = ""
+        self.fields['password'].label = ""
 
 
 class Register_form(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'email_register'}))
-    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'email_register'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password_register'}))
-    repeat_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password_repeat_register'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'username', 'placeholder': 'Имя пользователя'}))
+    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'email', 'placeholder': 'Электронная почта'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password', 'placeholder': 'Пароль'}))
+    repeat_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'password', 'placeholder': 'Повтор пароля'}))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = ""
+        self.fields['password'].label = ""
+        self.fields['email'].label = ""
+        self.fields['repeat_password'].label = ""
 
 class Support_form(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['topic'].label = "Запрос на поддержку"
-        self.fields['name'].label = "Ваше имя"
-        self.fields['phone_num'].label = "Номер телефона"
+        self.fields['topic'].label = ""
+        self.fields['name'].label = ""
+        self.fields['phone_num'].label = ""
 
     topic = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'topic', 'placeholder': 'Тема запроса/продукт'}))
-    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'name'}))
-    phone_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'phone_num'}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'name', 'placeholder': 'Ваше имя'}))
+    phone_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'phone_num', 'placeholder': 'Номер телефонаl'}))
 
 
 class Change_my_username_form(forms.Form):
@@ -55,6 +65,9 @@ class New_request_phys_form(forms.Form):
         self.fields['leasing_object'].label = "Документ об объекте лизинга"
         self.fields['application'].label = "Заявление на заключение договора лизинга"
         self.fields['credit_report_agreement'].label = "Согласие на предоставление кредитного отчета"
+        self.fields['name'].label = "Имя контакта"
+        self.fields['last_name'].label = "Фамилия контакта"
+        self.fields['phone_number'].label = "Номер телефона для связи"
         self.fields['work_record_book'].label = "Копия трудовой книжки"
 
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'name'}))
@@ -100,6 +113,9 @@ class New_request_jur_form(forms.Form):
         self.fields['registration'].label = "Копия свидетельства о регистрации"
         self.fields['shareholder_registration'].label = "Выписка из реестра акционеров (при наличии)"
         self.fields['tax_statement'].label = "Копия свидетельства о постановке на налоговый учет в ИМНС"
+        self.fields['name'].label = "Имя контакта"
+        self.fields['last_name'].label = "Фамилия контакта"
+        self.fields['phone_number'].label = "Номер телефона для связи"
 
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'name'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'last_name'}))
@@ -159,3 +175,24 @@ class Admin_application_form(forms.Form):
     rate = forms.CharField(widget=forms.TextInput(attrs={'class': 'rate'}))
     loan_amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'loan_amount'}))
     regular_payment_size = forms.CharField(widget=forms.TextInput(attrs={'class': 'regular_payment_size'}))
+
+class Admin_deed_form(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['duration'].required = False
+        self.fields['rate'].required = False
+        self.fields['loan_amount'].required = False
+        self.fields['regular_payment_size'].required = False
+        self.fields['date_signed'].required = False
+        self.fields['contract'].required = False
+    duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'duration'}))
+    rate = forms.CharField(widget=forms.TextInput(attrs={'class': 'rate'}))
+    loan_amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'loan_amount'}))
+    regular_payment_size = forms.CharField(widget=forms.TextInput(attrs={'class': 'regular_payment_size'}))
+    contract = forms.FileField(
+        widget=forms.FileInput(attrs={'class': 'contract', 'accept': 'application/pdf'}))
+    date_signed = forms.DateField(widget=forms.DateInput(attrs={'type':'date','class': 'date_signed'}))
+
+class Best_offer_form(forms.Form):
+    desired_amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'desired_amount'}))
+    desired_duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'desired_duration'}))

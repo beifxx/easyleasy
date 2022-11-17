@@ -1,21 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>hahaha</title>
-</head>
+    <link rel="stylesheet" href="{% static 'login_style.css' %}"></head>
 <body>
-{% extends 'main.html' %}
+<div class="topnav">
+  <a class="logo" href="">EASYLEASY</a>
+</div>
+
 
 {% block content %}
-<form method="POST">
+
+    <div class="login_form">
+    <form class="" method="POST">
     {% csrf_token %}
     <table>
         {{ form }}
     </table>
-    <a href="/register">Зарегистрироваться</a>
-    <input type="submit" value="Войти">
-</form>
+    <a class="register_link" href="/register">Зарегистрироваться</a> <br />
+    <input class="login_button" type="submit" value="Войти">
+    </form>
+    </div>
+
 {% endblock %}
 
 

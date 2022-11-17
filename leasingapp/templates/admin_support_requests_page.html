@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'main_admin.html' %}
+
+{% block content %}
+    {% for support_request in support_requests %}
+    <div class="support_request_card">
+    <h2>{{ support_request.topic }} </h2>
+    <h2><b>{{ application.status }}</b></h2>
+    <p>{{ support_request.name }}, {{ support_request.phone_num }}, {{ support_request.date }}</p>
+    <hr />
+    <form method="post">
+                {% csrf_token %}
+
+        <input name="request_id" type="hidden" value="{{ support_request.id }}">
+        <input type="submit" value="Закрыть запрос">
+    </form>
+    <hr />
+    </div>
+    {% endfor %}
+
+{% endblock %}
+</body>
+</html>

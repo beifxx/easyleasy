@@ -9,12 +9,12 @@ class ClientProfile(models.Model):
     last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=50)
     type = models.CharField(max_length=100, default="Физлицо")
-    #city = models.CharField(max_length=50)
-    #street = models.CharField(max_length=50)
-    #house_number = models.CharField(max_length=50)
-    #apartment_number = models.CharField(max_length=50)
-    #date_of_birth = models.DateField(blank=True, null=True)
-    #id_card_num = models.CharField(max_length=9)
+    # city = models.CharField(max_length=50)
+    # street = models.CharField(max_length=50)
+    # house_number = models.CharField(max_length=50)
+    # apartment_number = models.CharField(max_length=50)
+    # date_of_birth = models.DateField(blank=True, null=True)
+    # id_card_num = models.CharField(max_length=9)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -49,12 +49,18 @@ class Document(models.Model):
 
 class Product(models.Model):
     # id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    min_duration = models.IntegerField()
-    max_duration = models.IntegerField()
-    type = models.CharField(max_length=255)
-    min_amount = models.FloatField()
-    max_amount = models.FloatField()
+    name = models.CharField(max_length=255, verbose_name='Название')
+    min_duration = models.IntegerField(verbose_name='Минимальная длительность')
+    max_duration = models.IntegerField(verbose_name='Максимальна длительность')
+    type = models.CharField(max_length=255, verbose_name='Вид лизинга')
+    min_amount = models.FloatField(verbose_name='Минимальный размер')
+    max_amount = models.FloatField(verbose_name='Максимальный размер')
+
+    class Meta:
+        verbose_name = 'Программа'
+        verbose_name_plural = 'Программы'
+    def __str__(self):
+        return self.name
 
 
 class Application(models.Model):
@@ -67,16 +73,22 @@ class Application(models.Model):
 
 class Interest_Rate(models.Model):
     # id = models.AutoField(primary_key=True)
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    duration_more_than = models.IntegerField()
-    duration_less_than_or_equal = models.IntegerField()
-    rate = models.FloatField()
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Программа')
+    duration_more_than = models.IntegerField(verbose_name='Минимальный срок')
+    duration_less_than_or_equal = models.IntegerField(verbose_name='Максимальный срок')
+    rate = models.FloatField(verbose_name='Размер ставки')
+    class Meta:
+        verbose_name = 'Ставка'
+        verbose_name_plural = 'Ставки'
 
 
 class Promo(models.Model):
     # id = models.AutoField(primary_key=True)
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    description = models.CharField(max_length=1000)
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Программа')
+    description = models.CharField(max_length=1000, verbose_name='Описание')
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
 
 
 class Acceptance_Rule(models.Model):
@@ -91,7 +103,7 @@ class Product_Rule(models.Model):
 
 class Deal(models.Model):
     # id = models.AutoField(primary_key=True)
-    client_profile = models.ForeignKey(to=ClientProfile, on_delete=models.CASCADE)
+    client_profile = models.ForeignKey(primary_key=True, to=ClientProfile, on_delete=models.CASCADE)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
     duration = models.IntegerField()
     rate = models.FloatField()
