@@ -1,14 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="{% static 'admin_style.css' %}">
 
 </head>
-
 <body>
-{% extends 'main_admin.html' %}
+{% include 'navbar_admin.html' %}
 
 {% block content %}
 <script>
@@ -47,7 +47,8 @@ window.onload = function define_select_default(){
     <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
-
+<br />
+        <br />
     <select name="status_update" onload="define_select_default({{ deed.status }})">
         <option id="offer_accepted" value="Одобрено кредитной комиссией">Одобрено кредитной комиссией</option>
         <option id="offer_rejected" value="Отклонено кредитной комиссией">Отклонено кредитной комиссией</option>
@@ -55,7 +56,7 @@ window.onload = function define_select_default(){
         <option id="deed planned" value="Определена дата сделки">Определена дата сделки</option>
         <option id="deed signed" value="Договор подписан">Договор подписан</option>
     </select>
-    <input type="submit" value="Утвердить изменения">
+    <input class="submit" type="submit" value="Утвердить изменения">
     </form>
 
 
@@ -68,7 +69,7 @@ window.onload = function define_select_default(){
     <h5>Продукт - {{ deed.product.name }}</h5>
     <h5>Клиент - {{ deed.client_profile.type }}</h5>
     <h5>Статус - {{ deed.status }}</h5>
-    <h5>Сумма лизинга - {{ deed.loan_amount }}</h5>
+    <h5>Сумма лизинга - {{ deed.loan_amount }} рублей</h5>
     <h5>Размер ежемесячного платежа - {{ deed.regular_payment_size }} рублей</h5>
     <h5>Процентная ставка - {{ deed.rate }}%</h5>
     <h5>Срок - {{ deed.duration }} месяцев</h5>
@@ -82,15 +83,16 @@ window.onload = function define_select_default(){
         {% csrf_token %}
 
     <input name="client_profile" type="hidden" value="{{ deed.client_profile.id }}">
-    <input type="submit" value="Скачать архив документов клиента">
+    <input class="submit" type="submit" value="Скачать архив документов клиента">
     </form>
-
+    {% if deed.client_profile.id != None %}
     <form target="_blank" method="post" action="/download_contract">
         {% csrf_token %}
 
     <input name="client_profile" type="hidden" value="{{ deed.client_profile.id }}">
-    <input type="submit" value="Скачать копию договора">
+    <input class="submit" type="submit" value="Скачать копию договора">
     </form>
+    {% endif %}
 {% endblock %}
 </body>
 </html>

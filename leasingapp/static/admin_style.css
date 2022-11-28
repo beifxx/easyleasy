@@ -1,6 +1,7 @@
 @font-face{font-family:'Montserrat';src:url('Montserrat-VariableFont_wght.ttf')}
 
 a:visited { text-decoration: none; color: inherit }
+a { text-decoration: underline; color:inherit }
 a:hover { text-decoration: none; color:#8E8F90; }
 a:focus { text-decoration: none; color:#8E8F90; }
 a:hover, a:active { text-decoration: none; color:#8E8F90 }
@@ -161,4 +162,19 @@ th {
     border-radius: 6px;
     background-color: #74319C;
     color: white;
+}
+.loan_amount {
+    margin-left: 9.5em;
+}
+.rate {
+        margin-left: 7.5em;
+}
+.duration {
+    margin-left: 15.5em;
+}
+.contract {
+    margin-left: 7em;
+}
+.date_signed {
+    margin-left: 8.5em;
 }

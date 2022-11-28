@@ -1,4 +1,6 @@
 from django import forms
+from django.utils.safestring import mark_safe
+
 from leasingapp.models import *
 
 
@@ -171,6 +173,16 @@ class New_request_jur_form(forms.Form):
         widget=forms.FileInput(attrs={'class': 'tax_statement', 'accept': 'application/pdf'}))
 
 class Admin_application_form(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['duration'].required = False
+        self.fields['rate'].required = False
+        self.fields['loan_amount'].required = False
+        self.fields['regular_payment_size'].required = False
+        self.fields['duration'].label = mark_safe('Срок  ')
+        self.fields['rate'].label = mark_safe('<br /><br />Процентная ставка')
+        self.fields['loan_amount'].label = mark_safe('<br /><br />Размер лизинга')
+        self.fields['regular_payment_size'].label = mark_safe('<br /><br />Размер ежемесячного платежа')
     duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'duration'}))
     rate = forms.CharField(widget=forms.TextInput(attrs={'class': 'rate'}))
     loan_amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'loan_amount'}))
@@ -185,6 +197,12 @@ class Admin_deed_form(forms.Form):
         self.fields['regular_payment_size'].required = False
         self.fields['date_signed'].required = False
         self.fields['contract'].required = False
+        self.fields['duration'].label = mark_safe('Срок')
+        self.fields['rate'].label = mark_safe('<br /><br />Процентная ставка')
+        self.fields['loan_amount'].label = mark_safe('<br /><br />Размер лизинга')
+        self.fields['regular_payment_size'].label = mark_safe('<br /><br />Размер ежемесячного платежа')
+        self.fields['date_signed'].label = mark_safe('<br /><br />Дата подписания')
+        self.fields['contract'].label = mark_safe('<br /><br />Документ контракта')
     duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'duration'}))
     rate = forms.CharField(widget=forms.TextInput(attrs={'class': 'rate'}))
     loan_amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'loan_amount'}))

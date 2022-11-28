@@ -1,14 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="{% static 'admin_style.css' %}">
 
 </head>
-
 <body>
-{% extends 'main_admin.html' %}
+{% include 'navbar_admin.html' %}
 
 {% block content %}
 
@@ -16,23 +16,23 @@
     {{ form }}
     {% csrf_token %}
     <input type="hidden" name="accept" value="accept">
-    <input type="submit" value="Одобрить заявку">
+    <input type="submit" class="submit" value="Одобрить заявку">
     </form>
 
 <hr/>
     <form  method="post">
     {% csrf_token %}
     <input type="hidden" name="reject" value="reject">
-    <input type="submit" value="Отклонить заявку">
+    <input type="submit" class="submit" value="Отклонить заявку">
     </form>
 <hr/>
 
     <h4>Калькулятор платежей</h4>
     <form action="javascript:void(0);" name="calculator" onsubmit="calculate()">
-        <input type="number" id="percent">
-        <input type="number" id="loan_amount">
-        <input type="number" id="duration">
-        <input type="submit" value="Рассчитать">
+        <input type="number" placeholder="Процентная ставка" id="percent">
+        <input type="number" placeholder="Размер лизинга" id="loan_amount">
+        <input type="number" placeholder="Срок" id="duration">
+        <input class="submit" type="submit" value="Рассчитать">
     </form>
 
     <p>Ежемесячный платеж: </p><p id="result"></p>
@@ -68,7 +68,7 @@
         {% csrf_token %}
 
     <input name="client_profile" type="hidden" value="{{ application.client_profile.id }}">
-    <input type="submit" value="Скачать архив документов">
+    <input class="submit" type="submit" value="Скачать архив документов">
     </form>
 {% endblock %}
 </body>
