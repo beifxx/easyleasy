@@ -37,7 +37,7 @@ class Support_form(forms.Form):
     topic = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'topic', 'placeholder': 'Тема запроса/продукт'}))
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'name', 'placeholder': 'Ваше имя'}))
-    phone_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'phone_num', 'placeholder': 'Номер телефонаl'}))
+    phone_num = forms.CharField(widget=forms.TextInput(attrs={'class': 'phone_num', 'placeholder': 'Номер телефона'}))
 
 
 class Change_my_username_form(forms.Form):
@@ -212,5 +212,10 @@ class Admin_deed_form(forms.Form):
     date_signed = forms.DateField(widget=forms.DateInput(attrs={'type':'date','class': 'date_signed'}))
 
 class Best_offer_form(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['desired_amount'].label = "Желаемый размер лизинга"
+        self.fields['desired_duration'].label = "Желаемый срок лизинга"
+
     desired_amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'desired_amount'}))
     desired_duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'desired_duration'}))

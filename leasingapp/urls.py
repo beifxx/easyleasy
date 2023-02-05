@@ -23,6 +23,7 @@ urlpatterns = [
 
 
     path('a/home', views.admin_home_page),
+    path('logout', views.logout),
     path('a/applications', views.admin_applications_page),
     path('a/application/<int:application_id>', views.admin_single_application),
 

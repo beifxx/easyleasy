@@ -65,6 +65,8 @@ def login_page(request):
                 return redirect('a/home')
             else:
                 return redirect('u/home')
+        else:
+            return render(request, "login_page.html", {'form': form, 'message': 'Запись не найдена'})
     else:
         return render(request, "login_page.html", {'form': form})
 
@@ -154,7 +156,7 @@ def products_page(request):
     return render(request, 'products_page.html', products)
 
 
-def my_user_account(request):  # TODO fix the thing
+def my_user_account(request):
     for parent, dirnames, filenames in os.walk('../easyleasy'):
         for fn in filenames:
             if fn.lower().endswith('.pdf'):
@@ -968,3 +970,7 @@ def get_best_offer(request):
 
         print(final_set[0].product_name)
         return render(request, 'get_best_offer.html', {'form': form, 'result': final_set})
+
+
+def logout(request):
+    return login_page(request)

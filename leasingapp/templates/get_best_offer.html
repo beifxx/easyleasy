@@ -1,11 +1,15 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>offerinos</title>
+    <title>Easyleasy</title>
+    <link rel="stylesheet" href="{% static 'top_three.css' %}">
 </head>
-<body>
-{% extends 'main.html' %}
+    <body>
+{% include 'navbar_user.html' %}
 
 {% block content %}
 
@@ -22,6 +26,9 @@
         </select>
     </label>
     <input type="submit" value="Подобрать">
+    <br>
+    <br>
+    <br>
 <h3>При введенных параметрах </h3>
 </form>
     {% for product in result %}

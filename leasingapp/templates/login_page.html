@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>hahaha</title>
+    <title>Easyleasy</title>
     <link rel="stylesheet" href="{% static 'login_style.css' %}"></head>
 <body>
 <div class="topnav">
@@ -19,6 +19,10 @@
     <table>
         {{ form }}
     </table>
+        {% if message is not null %}
+            {{ message }}
+            <br>
+        {% endif %}
     <a class="register_link" href="/register">Зарегистрироваться</a> <br />
     <input class="login_button" type="submit" value="Войти">
     </form>

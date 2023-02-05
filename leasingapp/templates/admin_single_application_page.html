@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Easyleasy</title>
             <link rel="stylesheet" href="{% static 'admin_style.css' %}">
 
 </head>
@@ -12,7 +12,7 @@
 
 {% block content %}
 
-    <form method="post">
+    <form method="post" action="/a/deeds">
     {{ form }}
     {% csrf_token %}
     <input type="hidden" name="accept" value="accept">
@@ -20,7 +20,7 @@
     </form>
 
 <hr/>
-    <form  method="post">
+    <form  method="post" action="/a/applications">
     {% csrf_token %}
     <input type="hidden" name="reject" value="reject">
     <input type="submit" class="submit" value="Отклонить заявку">

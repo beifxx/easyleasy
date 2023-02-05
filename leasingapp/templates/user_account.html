@@ -5,7 +5,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Easyleasy</title>
     <link rel="stylesheet" href="{% static 'support_style.css' %}">
 </head>
     <body>
@@ -19,13 +19,6 @@
 {#    </table>#}
 {#    <input type="submit" value="Изменить">#}
 {#</form>#}
-<form method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form_password }}
-    </table>
-    <input type="submit" value="Изменить">
-</form>
 
 
     <h2>Мои заявки</h2>
@@ -57,7 +50,6 @@
             <h5>Дата подписания - {{ deed.date_signed }} <br> </h5>
     {% endif %}
     Сумма - {{ deed.loan_amount }} <br>
-    Размер платежа - {{ deed.regular_payment_size }} <br>
     Процентная ставка - {{ deed.rate }}% <br>
     Размер платежа - {{ deed.regular_payment_size }} <br>
 
